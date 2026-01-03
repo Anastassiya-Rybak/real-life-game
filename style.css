@@ -1,0 +1,152 @@
+:root {
+  --bg: #f4f6f8;
+  --card: #ffffff;
+  --primary: #5b7cff;
+  --text: #2b2e34;
+  --muted: #8a8f98;
+  --border: #e1e4ea;
+  --radius: 14px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.header p {
+  color: var(--muted);
+}
+
+.content {
+  flex: 1;
+  display: grid;
+  gap: 24px;
+}
+
+.add-task {
+  background: var(--card);
+  padding: 16px;
+  border-radius: var(--radius);
+  display: flex;
+  gap: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.add-task input {
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-size: 1rem;
+}
+
+.add-task input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.add-task button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 10px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.add-task button:hover {
+  background: #4a6af0;
+}
+
+.tasks {
+  background: var(--card);
+  padding: 20px;
+  border-radius: var(--radius);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.tasks h2 {
+  margin-bottom: 16px;
+  font-size: 1.3rem;
+}
+
+.task-list {
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+
+.task {
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fafbfc;
+}
+
+.task span {
+  font-size: 1rem;
+}
+
+.task small {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.task.done {
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+
+.footer {
+  text-align: center;
+  padding: 16px 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* 📱 Адаптация под мобильные устройства */
+@media (max-width: 600px) {
+  .header h1 {
+    font-size: 1.6rem;
+  }
+
+  .add-task {
+    flex-direction: column;
+  }
+
+  .add-task button {
+    width: 100%;
+  }
+}
