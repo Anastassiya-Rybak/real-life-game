@@ -1,13 +1,18 @@
 :root {
-  --bg: #f4f6f8;
-  --card: #ffffff;
-  --text: #1f2933;
-  --lowaccent: #f0cb52b6;
-  --accent: #f0cb52;
-  --muted: #e7e7e5;
-  --primary: hsl(125, 61%, 43%);
-  --border: #e5e7eb;
-  --bad: rgb(197, 50, 50);
+  /* Base */
+  --bg: #f2f4f7;          /* холодный светлый фон */
+  --card: #ffffff;       /* карточки */
+  --text: #1f2933;       /* графит */
+  --muted: #e4e7ec;      /* разделители / вторичные */
+  --border: #d0d5dd;
+
+  /* Accents */
+  --primary: #16a34a;    /* насыщенный зелёный (добавить) */
+  --accent: #e4963d;     /* насыщенный синий */
+  --lowaccent: #01a332;  /* светлый холодный синий */
+
+  /* Status */
+  --bad: #dc2626;        /* чистый красный */
 }
 
 * {
@@ -74,9 +79,10 @@ body {
   background: var(--card);
   border-radius: 0.4em;
   padding: 1em;
-  box-shadow: 0 8px 20px rgba(0,0,0,.05);
+  box-shadow:
+    0 4px 12px rgba(0,0,0,.08),
+    0 1px 2px rgba(0,0,0,.04);
 }
-
 .card h3 {
   font-size: 0.6em;
   text-transform: uppercase;
@@ -145,7 +151,6 @@ body {
 .progress-bar {
   height: 1em;
   width: 100%;
-  background: var(--muted);
   border-radius: 0.7rem;
   overflow: hidden;
 }
@@ -237,7 +242,6 @@ body {
 .weight-line {
   width: 100%;
   height: 10%;
-  background: var(--muted);
   border-radius: 0.7rem;
   overflow: hidden;
 }
@@ -334,25 +338,126 @@ body {
 
 .add-btn {
   background: var(--primary);
-  color: var(--card);
+  color: #fff;
 }
 
 .accent-btn {
   background: var(--accent);
-  color: var(--card);
+  color: #fff;
 }
 
 .low-accent {
-  background: var(--lowaccent);
-  color: var(--card);
+  color: var(--primary);
+  font-size: 4em;
+  font-weight: 700;
 }
 
 .just-btn {
   background: var(--muted);
-  color: var(--card);
+  color: var(--text);
 }
 
 .bad-btn {
   background: var(--bad);
-  color: var(--card);
+  color: #fff;
 }
+
+.progress-bar,
+.weight-line {
+  background: #e5e7eb;
+}
+
+.progress-fill.bad,
+.weight-line-progress.bad {
+  background: linear-gradient(90deg, #dc2626, #ef4444);
+}
+
+button {
+  cursor: pointer;
+  transition:
+    background 0.1s ease,
+    filter 0.1s ease;
+  box-shadow: 0 0 0.1em rgba(0, 0, 0, 0.158);
+}
+
+.primary-btn,
+.add-btn,
+.accent-btn,
+.bad-btn {
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.35),
+      rgba(0,0,0,0.12)
+    );
+}
+
+/* состояние нажатия — кнопка "вдавливается" */
+.primary-btn:active,
+.add-btn:active,
+.accent-btn:active,
+.bad-btn:active {
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.18),
+      rgba(255,255,255,0.25)
+    );
+}
+
+.square-btn:nth-child(2),
+.ghost-btn {
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(214, 152, 38, 0.45),
+      rgba(0,0,0,0.15)
+    );
+}
+
+.square-btn:nth-child(2):active,
+.ghost-btn:active {
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(212, 212, 212, 0.2),
+      rgba(255,255,255,0.3)
+    );
+}
+
+.icon-btn {
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.5),
+      rgba(0,0,0,0.15)
+    );
+}
+
+.icon-btn:active {
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.2),
+      rgba(255,255,255,0.25)
+    );
+}
+
+/* .ghost-btn {
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.6),
+      rgba(0,0,0,0.08)
+    );
+} */
+/* 
+.ghost-btn:active {
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.15),
+      rgba(255,255,255,0.35)
+    );
+} */
+
