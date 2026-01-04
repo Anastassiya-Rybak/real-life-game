@@ -1,49 +1,113 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Планировщик дел</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Планировщик</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="app">
-    <header class="header">
-      <h1>Планировщик дел</h1>
-      <p>Спокойно планируй день и фокусируйся на важном</p>
-    </header>
+<div class="app">
 
-    <main class="content">
-      <section class="add-task">
-        <input type="text" placeholder="Введите задачу…" />
-        <button>Добавить</button>
+  <!-- HEADER -->
+  <header class="top">
+    <h1 class="logo">Планировщик</h1>
+
+    <div class="top-actions">
+      <button class="icon-btn add-btn">＋</button>
+      <button class="icon-btn accent-btn">≡</button>
+      <button class="icon-btn just-btn">🧺</button>
+      <button class="icon-btn just-btn">⚙️</button>
+    </div>
+  </header>
+
+  <!-- MAIN GRID -->
+  <main class="dashboard">
+
+    <div class="finance-section">
+      <!-- ФИНАНСЫ -->
+      <section class="card finances">
+        <h3>Лимит на день</h3>
+        <div class="finance-main">
+          <span class="current">0</span>
+          <span class="divider">/</span>
+          <span class="limit">6000</span>
+        </div>
+
+        <div class="finance-actions">
+          <button class="ghost-btn bad-btn">Расход</button>
+          <button class="ghost-btn add-btn">Приход</button>
+        </div>
       </section>
 
-      <section class="tasks">
-        <h2>Сегодня</h2>
+      <!-- ПРОГРЕСС -->
+      <section class="card progress">
+        <h3>ближняя цель</h3>
+        <div class="progress-bar">
+          <div class="progress-fill bad" style="width: 5%"></div>
+        </div>
+        <p class="progress-text"><span id="saved-summ">10 000</span> из <span id="goal-summ">200000</span></p>
 
-        <ul class="task-list">
-          <li class="task done">
-            <span>Сделать зарядку</span>
-            <small>08:00</small>
-          </li>
-          <li class="task">
-            <span>Работа над проектом</span>
-            <small>10:00</small>
-          </li>
-          <li class="task">
-            <span>Прогулка</span>
-            <small>18:00</small>
-          </li>
-        </ul>
+        <div class="progress-actions">
+          <button class="square-btn bad-btn">−</button>
+          <button class="square-btn add-btn">+</button>
+        </div>
       </section>
-    </main>
 
-    <footer class="footer">
-      <span>© 2026 • Твой личный планировщик</span>
-    </footer>
+      <button id="finance-open" class="primary-btn accent-btn finance-open">ОБЗОР ФИНАНСОВ</button>
+    </div>
+
+    <!-- ОБЗОР -->
+    <h2 class="date">01.01.2025</h2>
+
+    <div class="tasks-section">
+      <!-- ДЕЛА -->
+      <section class="card tasks">
+        <div class="tasks-header">
+          <div class="square-btn low-accent">0</div>
+          <button class="square-btn add-btn">+</button>
+        </div>
+
+        <p class="tasks-info"><h3>Дела:</h3> <strong>0 / 5</strong></p>
+
+        <button class="primary-btn accent-btn daily-list">В список</button>
+      </section>
+
+      <!-- ВЕС -->
+      <section class="card weight">
+        <div class="weight-value"><h3>Вес:</h3> <strong>145.4 кг</strong></div>
+        <div class="weight-value"><h3>Цель:</h3> <strong>145.4 кг</strong></div>
+        <div class="weight-line">
+          <div class="weight-line-progress bad" style="width: 5%;"></div>
+        </div>
+
+        <button class="ghost-btn add-btn">Внести вес</button>
+        <button class="ghost-btn accent-btn">Статистика</button>
+      </section>
+    </div>
+
+  </main>
+
+</div>
+
+<!-- МОДАЛЬНОЕ ОКНО (пока скрыто) -->
+<div class="modal hidden">
+  <div class="modal-content">
+    <h2>Дело</h2>
+
+    <input type="text" placeholder="Заголовок" />
+    <textarea placeholder="Описание"></textarea>
+
+    <div class="modal-row">
+      <button class="chip">Дом</button>
+      <input type="time" />
+      <button class="chip">30 мин</button>
+    </div>
+
+    <button class="primary-btn full">Добавить</button>
   </div>
+</div>
 
 </body>
 </html>
