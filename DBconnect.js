@@ -22,7 +22,11 @@ const getConstValue = async (constName) => {
 }
 
 function getTodayDate() {
-  return new Date().toISOString().slice(0, 10);
+  const today = new Date();
+  const localDate = today.getFullYear() + '-' +
+                  String(today.getMonth() + 1).padStart(2, '0') + '-' +
+                  String(today.getDate()).padStart(2, '0');
+  return localDate;
 }
 
 // {
@@ -43,7 +47,7 @@ function getTodayDate() {
 
 async function getMainPageData() {
   const today = getTodayDate();
-
+  
   /* =========================
      1. BUDGET LIMIT
   ========================= */
@@ -59,12 +63,13 @@ async function getMainPageData() {
   const budgetLimit = budgetRows?.[0]?.sum ?? 0;
 
   /* =========================
-     2. CASH FLOW
+     2. CASH FLOW (today, без plan_id)
   ========================= */
   const { data: cashFlowRows, error: cashFlowError } = await db
     .from('cash-flow')
     .select('flow_sum, flow_type')
-    .eq('flow_date', today);
+    .eq('flow_date', today)
+    .is('plan_id', null); // ⬅️ ВАЖНО
 
   if (cashFlowError) throw cashFlowError;
 
@@ -81,14 +86,14 @@ async function getMainPageData() {
   ========================= */
   const { data: weightConstRows, error: constError } = await db
     .from('constants')
-    .select('num_value')
+    .select('num_value, text_value')
     .eq('const_name', 'weight_goal')
     .limit(1);
 
   if (constError) throw constError;
 
-  const weightGoal = weightConstRows?.[0]?.num_value ?? null;
-
+  const weightGoal  = weightConstRows?.[0]?.num_value ?? 0;
+  const weightStart = +weightConstRows?.[0]?.text_value ?? 0;
   /* =========================
      4. DAILY TASKS
   ========================= */
@@ -97,7 +102,7 @@ async function getMainPageData() {
     .select('done, act_point')
     .eq('date', today);
 
-  if (dailyError) throw dailyError;
+  if (dailyError) throw dailyError;  
 
   const totalDaily = dailyRows?.length ?? 0;
 
@@ -138,7 +143,7 @@ async function getMainPageData() {
 
   if (weightError) throw weightError;
 
-  const currentWeight = weightRows?.[0]?.value ?? null;
+  const currentWeight = weightRows?.[0]?.value ?? weightStart;
 
   /* =========================
      RESULT
@@ -147,6 +152,7 @@ async function getMainPageData() {
     budgetLimit,
     todayCashFlow,
     weightGoal,
+    weightStart,
     daily: {
       total: totalDaily,
       done: doneCount,
@@ -156,3 +162,4 @@ async function getMainPageData() {
     currentWeight
   };
 }
+

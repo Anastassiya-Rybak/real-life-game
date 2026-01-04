@@ -30,7 +30,7 @@
       <section class="card finances">
         <h3>Лимит на день</h3>
         <div class="finance-main">
-          <span class="current">0</span>
+          <span class="limit">0</span>
           <span class="divider">/</span>
           <span class="limit">0</span>
         </div>
@@ -45,7 +45,7 @@
       <section class="card progress">
         <h3>ближняя цель</h3>
         <div class="progress-bar">
-          <div class="progress-fill bad" style="width: 0%"></div>
+          <div class="progress-fill"></div>
         </div>
         <p class="progress-text"><span id="saved-summ">0</span> из <span id="goal-summ">0</span></p>
 
@@ -65,21 +65,21 @@
       <!-- ДЕЛА -->
       <section class="card tasks">
         <div class="tasks-header">
-          <div class="square-btn low-accent">0</div>
+          <div id="day-points" class="square-btn low-accent">0</div>
           <button class="square-btn add-btn">+</button>
         </div>
 
-        <p class="tasks-info"><h3>Дела:</h3> <strong>0 / 0</strong></p>
+        <p class="tasks-info"><h3>Дела:</h3> <strong id="tasks-check">0 / 0</strong></p>
 
         <button class="primary-btn accent-btn daily-list">В список</button>
       </section>
 
       <!-- ВЕС -->
       <section class="card weight">
-        <div class="weight-value"><h3>Вес:</h3> <strong>0 кг</strong></div>
-        <div class="weight-value"><h3>Цель:</h3> <strong>0 кг</strong></div>
+        <div class="weight-value"><h3>Вес:</h3> <strong><span class="weight-value-in"></span> кг</strong></div>
+        <div class="weight-value"><h3>Цель:</h3> <strong><span class="weight-value-in"></span> кг</strong></div>
         <div class="weight-line">
-          <div class="weight-line-progress bad" style="width: 0%;"></div>
+          <div class="weight-line-progress"></div>
         </div>
 
         <button class="ghost-btn add-btn">Внести вес</button>
