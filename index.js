@@ -1,9 +1,8 @@
 
 const fillDetails = async () => {
     const currData = await getMainPageData();
-
-    console.log(currData);
     
+    const elDate            = document.querySelector('.date');
     const elLimitSection    = document.querySelectorAll('.limit');
     const elSavedSum        = document.getElementById('saved-summ');
     const elGoalSum         = document.getElementById('goal-summ');
@@ -12,7 +11,9 @@ const fillDetails = async () => {
     const elTasksCheck      = document.getElementById('tasks-check');
     const elWeightValue     = document.querySelectorAll('.weight-value-in');
     const elWeightProgressBar  = document.querySelector('.weight-line-progress');
-
+    
+    elDate.textContent = currData.today;
+    
     elLimitSection[0].textContent = currData.todayCashFlow;
     elLimitSection[1].textContent = currData.budgetLimit;
 

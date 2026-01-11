@@ -29,6 +29,12 @@ function getTodayDate() {
   return localDate;
 }
 
+function formatDateLocal(isoDate) {
+  if (!isoDate) return '';
+  const [year, month, day] = isoDate.split('-');
+  return `${day}.${month}.${year}`;
+}
+
 // {
 //   budgetLimit: number,
 //   todayCashFlow: number,
@@ -46,7 +52,7 @@ function getTodayDate() {
 // }
 
 async function getMainPageData() {
-  const today = getTodayDate();
+  let today = getTodayDate();
   
   /* =========================
      1. BUDGET LIMIT
@@ -100,13 +106,13 @@ async function getMainPageData() {
   const { data: dailyRows, error: dailyError } = await db
     .from('daily')
     .select('done, act_point')
-    .eq('date', today);
+    .eq('daily_date', today);
 
   if (dailyError) throw dailyError;  
-
+  
   const totalDaily = dailyRows?.length ?? 0;
 
-  const doneDaily = (dailyRows ?? []).filter(row => row.done === true);
+  const doneDaily = (dailyRows ?? []).filter(row => row.done == true);
   const doneCount = doneDaily.length;
 
   const donePoints = doneDaily.reduce(
@@ -144,10 +150,13 @@ async function getMainPageData() {
   if (weightError) throw weightError;
 
   const currentWeight = weightRows?.[0]?.value ?? weightStart;
-
+  
   /* =========================
      RESULT
   ========================= */
+
+  today = formatDateLocal(today);
+
   return {
     budgetLimit,
     todayCashFlow,
@@ -159,7 +168,98 @@ async function getMainPageData() {
       donePoints
     },
     financeGoal,
-    currentWeight
+    currentWeight,
+    today
   };
 }
 
+const addDailyTask = async(taskData) => {
+  const { error: errorDaily } = await db
+    .from('daily')
+    .insert([{
+      daily_date: taskData.date,      // YYYY-MM-DD
+      act_id: taskData.name,          // связь через name
+      act_point: Number(taskData.point) || 0,
+      act_duration: Number(taskData.duration) || 0,
+      act_time: taskData.time || null
+    }]);
+
+  if (errorDaily) throw errorDaily;
+}
+
+const saveTask = async (taskData) => {  
+  try {
+    const { error } = await db
+      .from("daily_acts")
+      .upsert({
+        act_name: taskData.name,
+        act_point: +taskData.point,
+        act_option: taskData.option,
+        act_duration: +taskData.duration,
+        act_time: taskData.time,
+        act_timer: taskData.timer
+      });
+
+    if (error) throw error;
+
+    if (taskData.date) {
+      addDailyTask(taskData);
+    }
+
+    return {
+      success: true,
+      msg: "Сохранено",
+      addCurrTask: taskData === getTodayDate()
+    };
+
+  } catch (err) {
+    console.error("SAVE ERROR:", err);
+    throw err;
+  }
+
+}
+
+const sendTask = async (arrTasks, type = 'task') => {  
+  if (!Array.isArray(arrTasks) || !arrTasks.length) {
+    return { success: false, msg: 'Нет данных для сохранения' };
+  }
+
+  // дата ТОЛЬКО в формате YYYY-MM-DD
+  const todayISO = new Date().toISOString().slice(0, 10);
+
+  // формируем payload для БД (НЕ мутируем исходные объекты)
+  const payload = arrTasks.map(task => ({
+    daily_date: todayISO,
+    act_id: task.act_name,          // связь по name, как ты и используешь
+    act_point: task.act_point ?? 0,
+    act_duration: task.act_duration ?? null,
+    act_time: task.act_time ?? null,
+    done: false
+  }));
+
+  const { error } = await db
+    .from('daily')
+    .upsert(payload);
+
+  if (error) {
+    console.error('Supabase error:', error);
+    throw error;
+  }
+
+  return {
+    success: true,
+    msg: 'Сохранено'
+  };
+};
+
+const getUnspecList = async () => {
+  const { data: actsArr, error: actsError } = await db
+    .from('daily_acts')
+    .select('id, act_name, act_point, act_time, act_duration')
+    .eq('act_spec', false)
+    .order('act_point', { ascending: false });
+
+  if (actsError) throw actsError;  
+
+  return actsArr;
+}

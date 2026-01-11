@@ -4,24 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Планировщик</title>
+  <link rel="stylesheet" href="base.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="app">
-
   <!-- HEADER -->
   <header class="top">
     <h1 class="logo">Планировщик</h1>
 
     <div class="top-actions">
-      <button class="icon-btn add-btn">＋</button>
+      <button id="add-new-task-btn" class="icon-btn add-btn">＋</button>
       <button class="icon-btn accent-btn">≡</button>
       <button class="icon-btn just-btn">🧺</button>
       <button class="icon-btn just-btn">⚙️</button>
     </div>
   </header>
-
   <!-- MAIN GRID -->
   <main class="dashboard">
 
@@ -59,14 +58,14 @@
     </div>
 
     <!-- ОБЗОР -->
-    <h2 class="date">01.01.2025</h2>
+    <h2 class="date"></h2>
 
     <div class="tasks-section">
       <!-- ДЕЛА -->
       <section class="card tasks">
         <div class="tasks-header">
           <div id="day-points" class="square-btn low-accent">0</div>
-          <button class="square-btn add-btn">+</button>
+          <button id="add-daily-task" class="square-btn add-btn">+</button>
         </div>
 
         <p class="tasks-info"><h3>Дела:</h3> <strong id="tasks-check">0 / 0</strong></p>
@@ -88,30 +87,62 @@
     </div>
 
   </main>
-
 </div>
 
-<!-- МОДАЛЬНОЕ ОКНО (пока скрыто) -->
-<div class="modal hidden">
-  <div class="modal-content">
+ <!-- новое дело, которого еще нет в общем списке дел. -->
+<div id="modal_task-add" class="modal hidden">
+  <form class="modal-content">
     <h2>Дело</h2>
 
-    <input type="text" placeholder="Заголовок" />
-    <textarea placeholder="Описание"></textarea>
+    <input id="new-task-name" name="name" class="modal-task_name" type="text" placeholder="* Название" />
+    <textarea id="new-task-option" name="option" placeholder="Описание"></textarea>
 
-    <div class="modal-row">
-      <button class="chip">Дом</button>
-      <input type="time" />
-      <button class="chip">30 мин</button>
+    <div class="modal-task_details1">
+      <input class="modal-task_point" name="point" type="number" placeholder="* Баллы"/>
+      <input class="modal-task_duration" name="duration" type="number" placeholder="Минут"/>
+      <input class="modal-task_timer" name="timer" type="checkbox"/>
+    </div>
+    <div class="modal-task_details2">
+      <input class="modal-task_date" name="date" type="date"/>
+      <input class="modal-task_time" name="time" type="time"/>
     </div>
 
-    <button class="primary-btn full">Добавить</button>
-  </div>
+    <button class="modal-task_add-btn primary-btn full" type="submit">Сохранить</button>
+  </form>
+</div>
+
+<!-- добавление дела в день -->
+<div id="modal_task-daily" class="modal">
+  <form class="modal-content">
+    <h2>Дело</h2>
+    <div class="modal-content_container modal-daily_intro">
+      <button id="intro_list" class="modal-daily_btn accent-btn">ИЗ СПИСКА</button>
+      <button id="intro_block" class="modal-daily_btn light-btn">БЛОК ДЕЛ</button>
+      <button id="intro_new" class="modal-daily_btn add-btn">НОВОЕ ДЕЛО</button>
+    </div>
+    <div class="modal-content_container modal-daily_list hidden">
+      <div class="modal-daily_list-content">
+      </div>
+      <button type="submit" class="modal-daily_save-btn primary-btn full">Добавить</button>
+    </div>
+    <div class="modal-content_container modal-daily_block hidden">
+      <div class="modal-daily_block-content">
+        <button id="block-name" class="madal-daily_block-item" style="background-color: aqua;">
+          <span>БЛОК 1</span>
+          <div class="madal-daily_block-dop">
+            <span>30 мин</span><hr><span>10</span>
+          </div>
+        </button>
+      </div>
+      <button type="submit" class="modal-daily_save-btn primary-btn full">Добавить</button>
+    </div>
+  </form>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="DBconnect.js"></script>
 <script src="index.js"></script>
+<script src="base.js"></script>
 
 </body>
 </html>
