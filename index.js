@@ -1,4 +1,3 @@
-
 const fillDetails = async () => {
     const currData = await getMainPageData();
     

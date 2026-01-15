@@ -16,8 +16,8 @@
 
     <div class="top-actions">
       <button id="add-new-task-btn" class="icon-btn add-btn">＋</button>
-      <button class="icon-btn accent-btn">≡</button>
-      <button class="icon-btn just-btn">🧺</button>
+      <a class="icon-btn accent-btn" href="pages/lists/taskList/taskList.html"><hr><hr><hr></a>
+      <a class="icon-btn just-btn" href="">🧺</a>
       <button class="icon-btn just-btn">⚙️</button>
     </div>
   </header>
@@ -112,7 +112,7 @@
 </div>
 
 <!-- добавление дела в день -->
-<div id="modal_task-daily" class="modal">
+<div id="modal_task-daily" class="modal hidden">
   <form class="modal-content">
     <h2>Дело</h2>
     <div class="modal-content_container modal-daily_intro">
@@ -134,8 +134,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="DBconnect.js"></script>
+<script src="createTask.js"></script>
+<script src="/dailyTask.js"></script>
 <script src="index.js"></script>
-<script src="base.js"></script>
 
 </body>
 </html>
