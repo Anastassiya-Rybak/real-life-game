@@ -4,8 +4,11 @@ const elAddDailyTask    = document.getElementById('add-daily-task');
 const taskAddform       = document.getElementById('modal_task-daily');
 const elArrDailyForm    = taskAddform.querySelectorAll('.modal-content_container');
 
-let modalListData = null;
+let modalListData   = null;
+let modalBlocksData = null;
+let checkedBlock    = null;
 
+// TODO: При создании нового задания и заполненном modalListData - добавлять его и туда
 const openNewTaskModal = () => {
   taskCreateform.classList.remove('hidden');
 }
@@ -83,12 +86,19 @@ async function sendNewTask(e) {
 }
 
 const addTaskToDay = async () => {
-  const checkboxData  = taskAddform.querySelectorAll('input');
-  const addBtn        = taskAddform.querySelector('.modal-daily_save-btn');
-    
-  const filteredCheckData = [...checkboxData].filter(el => el.checked);
-  const choosedTasks      = modalListData.filter(e => filteredCheckData.find(el => el.id == e.id));  
+  let choosedTasks = null;
 
+  if (checkedBlock) {
+    choosedTasks = modalListData.filter(el => el.act_block == checkedBlock); 
+    checkedBlock = ''; 
+  } else {
+    const checkboxData  = taskAddform.querySelectorAll('input');
+    const filteredCheckData = [...checkboxData].filter(el => el.checked);
+    choosedTasks = modalListData.filter(e => filteredCheckData.find(el => el.id == e.id));  
+  }
+
+  const addBtn = taskAddform.querySelector('.modal-daily_save-btn');
+    
   if (!choosedTasks.length) return;
 
   try {
@@ -126,12 +136,9 @@ const showTaskList = async() => {
   
   elList.classList.remove('hidden');
 
-  if (modalListData) return;
-
-  modalListData = await getUnspecList();
-
-  console.log(modalListData);
-  
+  if (!modalListData) {
+    modalListData = await getUnspecList();  
+  }
 
   modalListData.forEach(el => {
     const elItemInput = document.createElement('input');
@@ -156,6 +163,47 @@ const showTaskList = async() => {
 
 }
 
+const showBlockList = async() => {
+  const elBlocks    = taskAddform.querySelector('.modal-daily_block');
+  const elContainer = taskAddform.querySelector('.modal-daily_block-content');
+  
+  elBlocks.classList.remove('hidden');
+
+  if (!modalListData) {
+    modalListData = await getUnspecList();  
+  } 
+  
+  if (!modalBlocksData) { // из списка задач отбираем уникальные имена блоков, а потом по этому же имени просто отберем все относящиеся задачи и сохраним.
+    let blockOfListData = modalListData.filter(el => Boolean(el.act_block) == true);
+    modalBlocksData = Object.values(
+      blockOfListData.reduce((acc, { act_block, block_color, act_point, act_duration }) => {
+        if (!acc[act_block]) {
+          acc[act_block] = { act_block, block_color, act_point: 0, act_duration: 0 };
+        }
+        acc[act_block].act_point += act_point;
+        acc[act_block].act_duration  += act_duration;
+        acc[act_block].block_color = block_color;
+        return acc;
+      }, {})
+    );
+  }
+
+  modalBlocksData.forEach(el => {
+    const elItemButton = document.createElement('button');
+    elItemButton.style.backgroundColor = el.block_color;
+    elItemButton.className             = 'modal-daily_block-item';
+    elItemButton.id                    = el.act_block;
+    
+    elContainer.append(elItemButton);
+
+    elItemButton.innerHTML = `<span>${el.act_block}</span>
+          <div class="madal-daily_block-dop">
+            <span>${el.act_duration} мин</span><hr><span>${el.act_point}</span>
+          </div>`;
+  });
+
+}
+
 const chooseDailyTask = async (e) => {
   if (!e.target.closest('.modal-content')) {
     closeDailyTaskModal();
@@ -168,8 +216,12 @@ const chooseDailyTask = async (e) => {
 
   e.preventDefault();
 
-  const elIntro   = taskAddform.querySelector('.modal-daily_intro');
-  const elBlocks  = taskAddform.querySelector('.modal-daily_block');
+  if (currBtn.className == 'modal-daily_block-item') { 
+    checkedBlock = currBtn.children[0].textContent;
+    return;
+  }
+  
+  const elIntro = taskAddform.querySelector('.modal-daily_intro');
 
   switch (currBtn.id) {
     case 'intro_list':
@@ -177,14 +229,15 @@ const chooseDailyTask = async (e) => {
       showTaskList();
       break;
     case 'intro_block':
-      
+      elIntro.classList.add('hidden');
+      showBlockList();
       break;
     case 'intro_new':
       closeDailyTaskModal();
       openNewTaskModal();
       break;
     default:
-      addTaskToDay();
+      addTaskToDay(currBtn.className);
       break;
   }
 }
