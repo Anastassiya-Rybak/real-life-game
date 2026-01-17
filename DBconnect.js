@@ -189,18 +189,25 @@ const addDailyTask = async(taskData) => {
 
 const saveTask = async (taskData) => {  
   try {
-    const { error } = await db
+    const savedData = {
+      act_name: taskData.name,
+      act_point: +taskData.point,
+      act_option: taskData.option,
+      act_duration: +taskData.duration,
+      act_date: taskData.date,
+      act_time: taskData.time,
+      act_timer: taskData.timer
+    };
+
+    const { data: data, error } = await db
       .from("daily_acts")
-      .upsert({
-        act_name: taskData.name,
-        act_point: +taskData.point,
-        act_option: taskData.option,
-        act_duration: +taskData.duration,
-        act_time: taskData.time,
-        act_timer: taskData.timer
-      });
+      .upsert(savedData, { onConflict: 'act_name' })
+      .select('id')
+      .single();
 
     if (error) throw error;
+    
+    savedData.id = data.id;
 
     if (taskData.date) {
       addDailyTask(taskData);
@@ -209,7 +216,8 @@ const saveTask = async (taskData) => {
     return {
       success: true,
       msg: "Сохранено",
-      addCurrTask: taskData === getTodayDate()
+      addCurrTask: taskData.date === getTodayDate(),
+      savedData: savedData
     };
 
   } catch (err) {
@@ -252,12 +260,12 @@ const sendTask = async (arrTasks, type = 'task') => {
   };
 };
 
-const getUnspecList = async () => {
+const getUnspecList = async (sort) => {
   const { data: actsArr, error: actsError } = await db
     .from('daily_acts')
-    .select('id, act_name, act_point, act_time, act_duration, act_block, block_color')
+    .select('id, act_name, act_option, act_timer, act_point, act_date, act_time, act_duration, act_block, block_color')
     .eq('act_spec', false)
-    .order('act_point', { ascending: false });
+    .order(sort, { ascending: false });
 
   if (actsError) throw actsError;  
 

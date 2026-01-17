@@ -67,7 +67,7 @@ const showTaskList = async() => {
   elList.classList.remove('hidden');
 
   if (!modalListData) {
-    modalListData = await getUnspecList();  
+    modalListData = await getUnspecList('act_point');  
   }
 
   modalListData.forEach(el => {
@@ -100,7 +100,7 @@ const showBlockList = async() => {
   elBlocks.classList.remove('hidden');
 
   if (!modalListData) {
-    modalListData = await getUnspecList();  
+    modalListData = await getUnspecList('act_point');  
   } 
   
   if (!modalBlocksData) { // из списка задач отбираем уникальные имена блоков, а потом по этому же имени просто отберем все относящиеся задачи и сохраним.

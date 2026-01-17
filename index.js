@@ -1,3 +1,5 @@
+const listData = null;
+
 const fillDetails = async () => {
     const currData = await getMainPageData();
     
