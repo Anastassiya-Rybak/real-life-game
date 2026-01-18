@@ -1,6 +1,6 @@
 const addNewTask        = document.getElementById('add-new-task-btn');
 const taskCreateform    = document.getElementById('modal_task-add');
-
+let changedTaskID       = '';
 // TODO: При создании нового задания и заполненном modalListData - добавлять его и туда
 const openNewTaskModal = (changedTask = '') => {
   taskCreateform.classList.remove('hidden');  
@@ -16,10 +16,12 @@ const openNewTaskModal = (changedTask = '') => {
 
   formElArr[3].children[0].value = dataToFill.act_point;
   formElArr[3].children[1].value = dataToFill.act_duration;
-  formElArr[3].children[2].value = dataToFill.act_timer;
+  formElArr[3].children[2].checked = dataToFill.act_timer;
  
   formElArr[4].children[0].value = dataToFill.act_date;
   formElArr[4].children[1].value = dataToFill.act_time;
+
+  changedTaskID = changedTask;
 }
 
 addNewTask.addEventListener('click', openNewTaskModal);
@@ -48,7 +50,7 @@ async function sendNewTask(e) {
     date: raw.date || null,
     time: raw.time || null,
     timer: form.querySelector('.modal-task_timer').checked
-  };
+  };  
 
   try {
     addBtn.disabled = true;
@@ -58,10 +60,13 @@ async function sendNewTask(e) {
 
     addBtn.textContent = res.msg || 'Сохранено';
     
-    if (listData) {
-      if(taskData.id){
-        const idx = listData.findIndex(el => el.id == taskData.id);
+    if (listData) {      
+      if(changedTaskID){
+        const idx = listData.findIndex(el => el.id == changedTaskID);
         listData.splice(idx, 1);
+        const currEl = document.getElementById(changedTaskID);
+        
+        currEl.remove();
       }
       
       listData.push(res.savedData); 
