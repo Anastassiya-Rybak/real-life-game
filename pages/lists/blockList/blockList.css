@@ -8,7 +8,6 @@ h2 {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    row-gap: 1vh;
     overflow-x: scroll;
 }
 
@@ -67,4 +66,45 @@ h2 {
 footer {
     display: flex;
     justify-content: center;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+}
+
+.modal-content h2 {
+    width: 100%;
+}
+
+.modal-block_name,
+textarea,
+.modal-content h3,
+.modal-block_task-list {
+    width: 70%;
+}
+
+.modal-content li {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-content li h4 {
+    width: 55%;
+    font-size: 0.8rem;
+}
+
+.modal-content li p {
+    font-size: 0.8em;
+}
+
+.modal-content li button {
+    width: 15%;
+    height: 1em;
+    font-size: 0.6em;
 }

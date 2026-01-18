@@ -260,10 +260,14 @@ const sendTask = async (arrTasks, type = 'task') => {
   };
 };
 
-const getUnspecList = async (sort) => {
+const getUnspecList = async (sort, block = false) => {
+  if (!block) {
+    block = 'act_name'
+  }
   const { data: actsArr, error: actsError } = await db
     .from('daily_acts')
     .select('id, act_name, act_option, act_timer, act_point, act_date, act_time, act_duration, act_block, block_color')
+    .not(block, 'is', null)
     .eq('act_spec', false)
     .order(sort, { ascending: false });
 

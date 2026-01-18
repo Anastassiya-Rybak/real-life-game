@@ -45,25 +45,36 @@
     </section>
   </main>
   <footer>
-    <button id="add-new-task-btn" class="ghost-btn add-btn">ДОБАВИТЬ БЛОК</button>
+    <button id="add-new-block-btn" class="ghost-btn add-btn">ДОБАВИТЬ БЛОК</button>
   </footer>
 </div>
-
- <!-- новое дело, которого еще нет в общем списке дел. -->
-<div id="modal_task-add" class="modal hidden">
-  <form class="modal-content">
+<div id="modal_block-add" class="modal">
+    <form class="modal-content">
     <h2>Блок дел</h2>
     <input id="new-block-name" name="name" class="modal-block_name" type="text" placeholder="* Название" />
     <input type="color" name="color" id="block-color">
     <textarea id="new-block-option" name="option" placeholder="Описание"></textarea>
-    <div class="modal-block_task-list">
-      <input class="modal-task_point" name="point" type="number" placeholder="* Баллы"/>
-      <input class="modal-task_duration" name="duration" type="number" placeholder="Минут"/>
-      <input class="modal-task_timer" name="timer" type="checkbox"/>
-    </div>
-    <button id="block-task-add">+</button>
+    <h3>СОСТАВ:</h3>
+    <ul class="modal-block_task-list">
+        <li id="idd">
+            <h4>дело 4</h4>
+            <p>15 | <span style="color: green;">2</span></p>
+            <button class="icon-btn bad-btn">x</button>
+        </li>
+        <li id="iddd">
+            <h4>дело 4</h4>
+            <p>15 | <span style="color: green;">2</span></p>
+            <button class="icon-btn bad-btn">x</button>
+        </li>
+    </ul>
+    <button id="block-task-add" class="icon-btn add-btn">+</button>
     <button class="modal-block_add-btn primary-btn full" type="submit">Сохранить</button>
-  </form>
+    </form>
+    <div class="modal-content_container modal-daily_list hidden">
+      <div class="modal-daily_list-content">
+      </div>
+      <button type="submit" class="modal-daily_save-btn primary-btn full">Добавить</button>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
