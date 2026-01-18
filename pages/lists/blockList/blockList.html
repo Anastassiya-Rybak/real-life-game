@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Планировщик</title>
+  <link rel="stylesheet" href="/base.css">
+  <link rel="stylesheet" href="blockList.css">
+</head>
+<body>
+
+<div class="app">
+  <!-- HEADER -->
+  <header class="top">
+    <h1 class="logo">Планеровщик</h1>
+    <div class="top-actions">
+      <a class="icon-btn light-btn" href="/index.html"><img src="/log-out-outlined-svgrepo-com.svg" alt="main"></a>
+      <a class="icon-btn just-btn" href="pages/lists/taskList/taskList.html">🧺</a>
+      <button class="icon-btn just-btn">⚙️</button>
+    </div>
+  </header>
+  <!-- MAIN GRID -->
+  <main class="dashboard">
+    <h2>БЛОКИ ДЕЛ</h2>
+    <section class="dashboard_content">
+        <div class="dashboard_block" id="block-name">
+            <div class="dashboard_title-inner" style="background-color: antiquewhite;">
+                <h3>БЛОК 1</h3>
+                <p><span style="color: green;">10</span> | 45 мин</p>
+            </div>
+            <div class="dashboard_detailes-inner">
+                <ul>
+                    <li>
+                        <h5>Стирка</h5>
+                        <p>10 | <span style="color: green;">1</span></p>
+                    </li>
+                    <li>
+                        <h5>Мыть полы</h5>
+                        <p>15 | <span style="color: green;">3</span></p>
+                    </li>
+                </ul>
+                <button class="ghost-btn light-btn">РЕДАКТИРОВАТЬ</button>
+            </div>
+        </div>
+    </section>
+  </main>
+  <footer>
+    <button id="add-new-task-btn" class="ghost-btn add-btn">ДОБАВИТЬ БЛОК</button>
+  </footer>
+</div>
+
+ <!-- новое дело, которого еще нет в общем списке дел. -->
+<div id="modal_task-add" class="modal hidden">
+  <form class="modal-content">
+    <h2>Блок дел</h2>
+    <input id="new-block-name" name="name" class="modal-block_name" type="text" placeholder="* Название" />
+    <input type="color" name="color" id="block-color">
+    <textarea id="new-block-option" name="option" placeholder="Описание"></textarea>
+    <div class="modal-block_task-list">
+      <input class="modal-task_point" name="point" type="number" placeholder="* Баллы"/>
+      <input class="modal-task_duration" name="duration" type="number" placeholder="Минут"/>
+      <input class="modal-task_timer" name="timer" type="checkbox"/>
+    </div>
+    <button id="block-task-add">+</button>
+    <button class="modal-block_add-btn primary-btn full" type="submit">Сохранить</button>
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/DBconnect.js"></script>
+<script src="/createBlock.js"></script>
+<script src="blockList.js"></script>
+
+</body>
+</html>

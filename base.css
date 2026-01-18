@@ -38,6 +38,10 @@ a {
   text-decoration: none;
 }
 
+li {
+  list-style: none;
+}
+
 .app {
   max-width: 420px;
   margin: 0 auto;
