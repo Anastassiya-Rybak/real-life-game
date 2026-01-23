@@ -1,27 +1,44 @@
 const addNewBlock        = document.getElementById('add-new-block-btn');
 const blockCreateform    = document.getElementById('modal_block-add');
+const elTaskListContainer = blockCreateform.querySelector('.modal-block_task-list');
 let changedBlockName     = '';
 let modalListData         = null;
+let choosedTasks          = [];
 
-// TODO: При создании нового задания и заполненном modalListData - добавлять его и туда
+const createBlockTaskListEl = (data) => {
+    const elLi = document.createElement('li');
+    elLi.id = data.id;
+    elLi.innerHTML = `<h4>${data.act_name}</h4>
+                      <p>${data.act_duration} | <span style="color: green;">${data.act_point}</span></p>
+                      <button class="icon-btn bad-btn">x</button>`;
+
+    elTaskListContainer.append(elLi);
+}
+
 const openNewBlockModal = (changedBlock = '') => {
   blockCreateform.classList.remove('hidden');  
   
   if (typeof changedBlock !== 'string' || !changedBlock) return;
+  console.log(blocksData);
 
-  const dataToFill = blocksData.find(el => el[0].act_block == changedBlock);
+  choosedTasks = structuredClone(blocksData.find(el => el[0].act_block == changedBlock));
   
-//   let formElArr = blockCreateform.children[0].children;
+  const elBlockName = document.getElementById('new-block-name');
+  elBlockName.value = choosedTasks[0].act_block;
 
-//   formElArr[1].value = dataToFill.act_name;
-//   formElArr[2].value = dataToFill.act_option;
+  const elBlockColor = document.getElementById('block-color');
+  elBlockColor.value = choosedTasks[0].block_color;
 
-//   formElArr[3].children[0].value = dataToFill.act_point;
-//   formElArr[3].children[1].value = dataToFill.act_duration;
-//   formElArr[3].children[2].checked = dataToFill.act_timer;
- 
-//   formElArr[4].children[0].value = dataToFill.act_date;
-//   formElArr[4].children[1].value = dataToFill.act_time;
+  const elBlockOption = document.getElementById('new-block-option');
+  elBlockOption.value = choosedTasks[0].block_option;
+  
+  for (let i = elTaskListContainer.children.length - 1; i >= 0; i--) {
+    elTaskListContainer.children[i].remove();
+  }
+
+  choosedTasks.forEach(el => {
+    createBlockTaskListEl(el);
+  });
 
   changedBlockName = changedBlock;
 }
@@ -29,66 +46,67 @@ const openNewBlockModal = (changedBlock = '') => {
 addNewBlock.addEventListener('click', openNewBlockModal);
 
 blockCreateform.addEventListener('click', (e) => {
-  if (!e.target.closest('.modal-content')) {
+  if (!e.target.closest('form')) {
     blockCreateform.classList.add('hidden');
+    blockCreateform.children[1].classList.add('hidden');
+    blockCreateform.children[0].classList.remove('hidden');
+
     blockCreateform.children[0].reset();
+    blockCreateform.children[1].reset();
+
+    choosedTasks = [];
+    for (let i = elTaskListContainer.children.length - 1; i >= 0; i--) {
+      elTaskListContainer.children[i].remove();
+    }
   }
 
   if (!e.target.closest('button')) return;
-  
+
+  e.preventDefault();  
+
   const currBtn = e.target.closest('button');
 
-  currBtn.preventDefault();
+  switch (currBtn.id) {
+    case 'block-task-add':
+      showTaskList();
+      break;
+    case 'task-lict-add':
+      saveTaskList();
+      break;
+    case 'modal-block_add-btn':
+      sendNewBlock();
+      break;
+    default:
+      break;
+  }
 
-  if (currBtn.id == 'block-task-add') showTaskList();
+  if (currBtn.className.includes('bad-btn')) {
+    const deletedId = currBtn.closest('li').id;
+    choosedTasks.forEach(el => {
+      if (el.id == deletedId) {        
+        el.act_block = null;
+      }
+    });
 
+    const deletedEl = document.getElementById(deletedId);
+    deletedEl.remove();
+  }
 });
 
 const sendNewBlock = async(e) => {
-  const form   = e.target;
-  const addBtn = form.querySelector('.modal-task_add-btn');
-
-  // Сбор данных формы
-  const raw = Object.fromEntries(new FormData(form));
-
-  const taskData = {
-    ...raw,
-    date: raw.date || null,
-    time: raw.time || null,
-    timer: form.querySelector('.modal-task_timer').checked
-  };  
+  const addBtn = blockCreateform.querySelector('.modal-block_add-btn'); 
 
   try {
     addBtn.disabled = true;
     addBtn.textContent = 'Сохранение...';
-
-    const res = await saveTask(taskData);
+    
+    const res = await saveTask(choosedTasks);
 
     addBtn.textContent = res.msg || 'Сохранено';
     
-    if (listData) {      
-      if(changedTaskID){
-        const idx = listData.findIndex(el => el.id == changedTaskID);
-        listData.splice(idx, 1);
-        const currEl = document.getElementById(changedTaskID);
-        
-        currEl.remove();
-      }
-      
-      listData.push(res.savedData); 
-      createLi(res.savedData);
-    } else if (res.addCurrTask) {
-      const elTasksCheck = document.getElementById('tasks-check');
-
-      const [label, countStr] = elTasksCheck.textContent.split(' / ');
-      const count = Number(countStr) + 1;
-
-      elTasksCheck.textContent = `${label} / ${count}`;
-    }
-
     setTimeout(() => {
-      taskCreateform.classList.add('hidden');
-      form.reset();
+      blockCreateform.classList.add('hidden');
+      blockCreateform.children[0].reset();
       addBtn.textContent = 'Сохранить';
       addBtn.disabled = false;
     }, 600);
@@ -101,9 +119,9 @@ const sendNewBlock = async(e) => {
 }
 
 const showTaskList = async() => {
-  const modalForm    = document.querySelector('modal-content');
-  const elList      = taskAddform.querySelector('.modal-daily_list');
-  const elContainer = taskAddform.querySelector('.modal-daily_list-content');
+  const modalForm    = document.querySelector('.modal-content');
+  const elList      = blockCreateform.querySelector('.modal-task_list');
+  const elContainer = blockCreateform.querySelector('.modal-task_list-content');
   
   elList.classList.remove('hidden');
   modalForm.classList.add('hidden');
@@ -132,9 +150,23 @@ const showTaskList = async() => {
     elItemLabel.append(elItemTitile);
     elItemLabel.append(elItemSpan);
   });
-
 }
 
-/* Отправка форм */
-blockCreateform.addEventListener('submit', sendNewBlock);
+const saveTaskList = () => {
+  blockCreateform.children[1].classList.add('hidden');
+  blockCreateform.children[0].classList.remove('hidden');
+  
+  const elBlockName = document.getElementById('new-block-name').value;
+  const checkboxData  = blockCreateform.children[1].querySelectorAll('input');
+  const filteredCheckData = [...checkboxData].filter(el => el.checked);
+  const filteredTasks = modalListData.filter(e => filteredCheckData.find(el => el.id == e.id));  
+ 
+  filteredTasks.forEach(el => { el.act_block = elBlockName; });
+
+  filteredTasks.forEach(el => {
+    createBlockTaskListEl(el);
+  });
+  
+  choosedTasks = choosedTasks.concat(filteredTasks);
+}
 

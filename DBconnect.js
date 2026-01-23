@@ -189,36 +189,49 @@ const addDailyTask = async(taskData) => {
 
 const saveTask = async (taskData) => {  
   try {
-    const savedData = {
-      act_name: taskData.name,
-      act_point: +taskData.point,
-      act_option: taskData.option,
-      act_duration: +taskData.duration,
-      act_date: taskData.date,
-      act_time: taskData.time,
-      act_timer: taskData.timer
-    };
+    if (Array.isArray(taskData)) {      
+      const { error } = await db
+      .from("daily_acts")
+      .upsert(taskData, { onConflict: 'act_name' });
 
-    const { data: data, error } = await db
+      if (error) throw error;
+    
+      return {
+        success: true,
+        msg: "Сохранено",
+      };
+    } else {
+      const savedData = {
+        act_name: taskData.name,
+        act_point: +taskData.point,
+        act_option: taskData.option,
+        act_duration: +taskData.duration,
+        act_date: taskData.date,
+        act_time: taskData.time,
+        act_timer: taskData.timer
+      };
+          
+      const { data: data, error } = await db
       .from("daily_acts")
       .upsert(savedData, { onConflict: 'act_name' })
       .select('id')
       .single();
 
-    if (error) throw error;
+      if (error) throw error;
     
-    savedData.id = data.id;
+      savedData.id = data.id;
 
-    if (taskData.date) {
-      addDailyTask(taskData);
+      if (taskData.date) {
+        addDailyTask(taskData);
+      }
+
+      return {
+        success: true,
+        msg: "Сохранено",
+        addCurrTask: taskData.date === getTodayDate(),
+        savedData: savedData
+      };
     }
-
-    return {
-      success: true,
-      msg: "Сохранено",
-      addCurrTask: taskData.date === getTodayDate(),
-      savedData: savedData
-    };
 
   } catch (err) {
     console.error("SAVE ERROR:", err);
@@ -266,7 +279,7 @@ const getUnspecList = async (sort, block = false) => {
   }
   const { data: actsArr, error: actsError } = await db
     .from('daily_acts')
-    .select('id, act_name, act_option, act_timer, act_point, act_date, act_time, act_duration, act_block, block_color')
+    .select('id, act_name, act_option, act_timer, act_point, act_date, act_time, act_duration, act_block, block_color, block_option')
     .not(block, 'is', null)
     .eq('act_spec', false)
     .order(sort, { ascending: false });

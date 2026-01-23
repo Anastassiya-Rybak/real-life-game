@@ -3,11 +3,16 @@ const elContentList = document.querySelector('.dashboard_content');
 let blocksData = null;
 
 const toggleInner = (e) => {
+    const parentElBtn = e.target.closest('button');
     const parentEl = e.target.closest('.dashboard_title-inner');
 
-    if (!parentEl) return;
+    if (!parentEl && !parentElBtn) return;
 
-    parentEl.nextElementSibling.classList.toggle('fit-content');
+    if (parentElBtn) {        
+        openNewBlockModal(parentElBtn.closest('.dashboard_block').id);    
+    } else {
+        parentEl.nextElementSibling.classList.toggle('fit-content');
+    }
 }
 
 const creatBlockEl = (blockData) => {
@@ -33,7 +38,7 @@ const creatBlockEl = (blockData) => {
         elUl.append(elLi);
 
         const elH = document.createElement('h5');
-        elH.textContent = elem.act_block;
+        elH.textContent = elem.act_name;
 
         const elP = document.createElement('p');
         elP.innerHTML = `${elem.act_duration} | <span style="color: green;">${elem.act_point}</span>`;
@@ -80,14 +85,6 @@ const fillContent = async() => {
     for (const block of blocksData) {
         creatBlockEl(block);
     }
-}
-
-const openBlockCard = (e) => {
-    // const parent = e.target.closest('button');
-    
-    // if (!parent) return;
-
-    // openNewTaskModal(parent.closest('li').id);
 }
 
 const initContent = () => {
