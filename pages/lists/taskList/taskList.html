@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Планировщик</title>
+  <link rel="stylesheet" href="/base.css">
+  <link rel="stylesheet" href="taskList.css">
+</head>
+<body>
+
+<div class="app">
+  <!-- HEADER -->
+  <header class="top">
+    <h1 class="logo">Планеровщик</h1>
+
+    <div class="top-actions">
+      <a class="icon-btn light-btn" href="/index.html"><img src="/log-out-outlined-svgrepo-com.svg" alt="main"></a>
+      <a class="icon-btn just-btn" href="pages/lists/taskList/taskList.html">🧺</a>
+      <button class="icon-btn just-btn">⚙️</button>
+    </div>
+  </header>
+  <!-- MAIN GRID -->
+  <main class="dashboard">
+    <h2>ОБЩИЙ СПИСОК</h2>
+    <ul class="list-content">
+    </ul>
+  </main>
+  <footer>
+    <button id="add-new-task-btn" class="icon-btn add-btn">＋</button>
+    <a class="ghost-btn accent-btn" href="/pages/lists/blockList/blockList.html">БЛОКИ</a>
+  </footer>
+</div>
+
+ <!-- новое дело, которого еще нет в общем списке дел. -->
+<div id="modal_task-add" class="modal hidden">
+  <form class="modal-content">
+    <h2>Дело</h2>
+    <input id="new-task-name" name="name" class="modal-task_name" type="text" placeholder="* Название" />
+    <textarea id="new-task-option" name="option" placeholder="Описание"></textarea>
+    <div class="modal-task_details1">
+      <input class="modal-task_point" name="point" type="number" placeholder="* Баллы"/>
+      <input class="modal-task_duration" name="duration" type="number" placeholder="Минут"/>
+      <input class="modal-task_timer" name="timer" type="checkbox"/>
+    </div>
+    <div class="modal-task_details2">
+      <input class="modal-task_date" name="date" type="date"/>
+      <input class="modal-task_time" name="time" type="time"/>
+    </div>
+    <button class="modal-task_add-btn primary-btn full" type="submit">Сохранить</button>
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/DBconnect.js"></script>
+<script src="/createTask.js"></script>
+<script src="taskList.js"></script>
+
+</body>
+</html>

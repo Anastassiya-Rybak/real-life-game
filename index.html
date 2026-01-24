@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Планировщик</title>
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+  <!-- HEADER -->
+  <header class="top">
+    <h1 class="logo">Планировщик</h1>
+
+    <div class="top-actions">
+      <button id="add-new-task-btn" class="icon-btn add-btn">＋</button>
+      <a class="icon-btn accent-btn" href="pages/lists/taskList/taskList.html"><hr><hr><hr></a>
+      <a class="icon-btn just-btn" href="">🧺</a>
+      <button class="icon-btn just-btn">⚙️</button>
+    </div>
+  </header>
+  <!-- MAIN GRID -->
+  <main class="dashboard">
+
+    <div class="finance-section">
+      <!-- ФИНАНСЫ -->
+      <section class="card finances">
+        <h3>Лимит на день</h3>
+        <div class="finance-main">
+          <span class="limit">0</span>
+          <span class="divider">/</span>
+          <span class="limit">0</span>
+        </div>
+
+        <div class="finance-actions">
+          <button class="ghost-btn bad-btn">Расход</button>
+          <button class="ghost-btn add-btn">Приход</button>
+        </div>
+      </section>
+
+      <!-- ПРОГРЕСС -->
+      <section class="card progress">
+        <h3>ближняя цель</h3>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+        <p class="progress-text"><span id="saved-summ">0</span> из <span id="goal-summ">0</span></p>
+
+        <div class="progress-actions">
+          <button class="square-btn bad-btn">−</button>
+          <button class="square-btn add-btn">+</button>
+        </div>
+      </section>
+
+      <button id="finance-open" class="primary-btn accent-btn finance-open">ОБЗОР ФИНАНСОВ</button>
+    </div>
+    <!-- ОБЗОР -->
+    <h2 class="date"></h2>
+    <div class="tasks-section">
+      <!-- ДЕЛА -->
+      <section class="card tasks">
+        <div class="tasks-header">
+          <div id="day-points" class="square-btn low-accent">0</div>
+          <button id="add-daily-task" class="square-btn add-btn">+</button>
+        </div>
+        <p class="tasks-info"><h3>Дела:</h3> <strong id="tasks-check">0 / 0</strong></p>
+        <a id="daily-list-open" class="ghost-btn accent-btn daily-list" href="/pages/day/day.html">В список</a>
+      </section>
+      <!-- ВЕС -->
+      <section class="card weight">
+        <div class="weight-value"><h3>Вес:</h3> <strong><span class="weight-value-in"></span> кг</strong></div>
+        <div class="weight-value"><h3>Цель:</h3> <strong><span class="weight-value-in"></span> кг</strong></div>
+        <div class="weight-line">
+          <div class="weight-line-progress"></div>
+        </div>
+        <button class="ghost-btn add-btn">Внести вес</button>
+        <button class="ghost-btn accent-btn">Статистика</button>
+      </section>
+    </div>
+
+  </main>
+</div>
+
+ <!-- новое дело, которого еще нет в общем списке дел. -->
+<div id="modal_task-add" class="modal hidden">
+  <form class="modal-content">
+    <h2>Дело</h2>
+
+    <input id="new-task-name" name="name" class="modal-task_name" type="text" placeholder="* Название" />
+    <textarea id="new-task-option" name="option" placeholder="Описание"></textarea>
+
+    <div class="modal-task_details1">
+      <input class="modal-task_point" name="point" type="number" placeholder="* Баллы"/>
+      <input class="modal-task_duration" name="duration" type="number" placeholder="Минут"/>
+      <input class="modal-task_timer" name="timer" type="checkbox"/>
+    </div>
+    <div class="modal-task_details2">
+      <input class="modal-task_date" name="date" type="date"/>
+      <input class="modal-task_time" name="time" type="time"/>
+    </div>
+
+    <button class="modal-task_add-btn primary-btn full" type="submit">Сохранить</button>
+  </form>
+</div>
+
+<!-- добавление дела в день -->
+<div id="modal_task-daily" class="modal hidden">
+  <form class="modal-content">
+    <h2>Дело</h2>
+    <div class="modal-content_container modal-daily_intro">
+      <button id="intro_list" class="modal-daily_btn accent-btn">ИЗ СПИСКА</button>
+      <button id="intro_block" class="modal-daily_btn light-btn">БЛОК ДЕЛ</button>
+      <button id="intro_new" class="modal-daily_btn add-btn">НОВОЕ ДЕЛО</button>
+    </div>
+    <div class="modal-content_container modal-daily_list hidden">
+      <div class="modal-daily_list-content">
+      </div>
+      <button type="submit" class="modal-daily_save-btn primary-btn full">Добавить</button>
+    </div>
+    <div class="modal-content_container modal-daily_block hidden">
+      <div class="modal-daily_block-content"></div>
+      <button type="submit" class="modal-daily_save-btn primary-btn full">Добавить</button>
+    </div>
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="DBconnect.js"></script>
+<script src="createTask.js"></script>
+<script src="/dailyTask.js"></script>
+<script src="index.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Планировщик</title>
+  <link rel="stylesheet" href="/base.css">
+  <link rel="stylesheet" href="day.css">
+</head>
+<body>
+
+<div class="app">
+  <!-- HEADER -->
+  <header class="top">
+    <h1 class="logo">Планеровщик</h1>
+    <div class="top-actions">
+      <a class="icon-btn light-btn" href="/index.html"><img src="/log-out-outlined-svgrepo-com.svg" alt="main"></a>
+      <a class="icon-btn accent-btn" href="pages/lists/taskList/taskList.html"><hr><hr><hr></a>
+      <a class="icon-btn just-btn" href="pages/lists/taskList/taskList.html">🧺</a>
+      <button class="icon-btn just-btn">⚙️</button>
+    </div>
+  </header>
+  <!-- MAIN GRID -->
+  <main class="dashboard">
+    <section class="date-content">
+        <button id="prev-day-btn" class="date-content_prev">\\\</button>
+        <h2 id="curr-day">01/01/2026</h2>
+        <button id="next-day-btn" class="date-content_next">///</button>
+        <button id="switch-date-btn" class="date-content_switch ghost-btn bad-btn hidden">ИЗМЕНИТЬ</button>
+    </section>
+    <section class="dashboard_content">
+        <ul class="list-content">
+        </ul>
+    </section>
+  </main>
+  <footer>
+    <button id="add-daily-task" class="ghost-btn add-btn">Добавить</button>
+  </footer>
+</div>
+
+ <!-- новое дело, которого еще нет в общем списке дел. -->
+<div id="modal_task-add" class="modal hidden">
+  <form class="modal-content">
+    <h2>Дело</h2>
+
+    <input id="new-task-name" name="name" class="modal-task_name" type="text" placeholder="* Название" />
+    <textarea id="new-task-option" name="option" placeholder="Описание"></textarea>
+
+    <div class="modal-task_details1">
+      <input class="modal-task_point" name="point" type="number" placeholder="* Баллы"/>
+      <input class="modal-task_duration" name="duration" type="number" placeholder="Минут"/>
+      <input class="modal-task_timer" name="timer" type="checkbox"/>
+    </div>
+    <div class="modal-task_details2">
+      <input class="modal-task_date" name="date" type="date"/>
+      <input class="modal-task_time" name="time" type="time"/>
+    </div>
+
+    <button class="modal-task_add-btn primary-btn full" type="submit">Сохранить</button>
+  </form>
+</div>
+
+<!-- добавление дела в день -->
+<div id="modal_task-daily" class="modal hidden">
+  <form class="modal-content">
+    <h2>Дело</h2>
+    <div class="modal-content_container modal-daily_intro">
+      <button id="intro_list" class="modal-daily_btn accent-btn">ИЗ СПИСКА</button>
+      <button id="intro_block" class="modal-daily_btn light-btn">БЛОК ДЕЛ</button>
+      <button id="intro_new" class="modal-daily_btn add-btn">НОВОЕ ДЕЛО</button>
+    </div>
+    <div class="modal-content_container modal-daily_list hidden">
+      <div class="modal-daily_list-content">
+      </div>
+      <button type="submit" class="modal-daily_save-btn primary-btn full">Добавить</button>
+    </div>
+    <div class="modal-content_container modal-daily_block hidden">
+      <div class="modal-daily_block-content"></div>
+      <button type="submit" class="modal-daily_save-btn primary-btn full">Добавить</button>
+    </div>
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/DBconnect.js"></script>
+<script src="day.js"></script>
+<script src="/dailyTask.js"></script>
+<script src="/createTask.js"></script>
+
+</body>
+</html>

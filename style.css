@@ -1,0 +1,236 @@
+.app {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* HEADER */
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3vh;
+}
+
+.logo {
+  font-size: 1.4rem;
+}
+
+.top-actions {
+  width: 55%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icon-btn {
+  width: 11vw;
+  height: 5vh;
+  border-radius: 0.3rem;
+  font-weight: 900;
+  border: none;
+  font-size: 2em;
+}
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+}
+
+.finance-section {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  row-gap: 5px;
+}
+
+/* CARDS */
+.card {
+  background: var(--card);
+  border-radius: 0.4em;
+  padding: 1em;
+  box-shadow:
+    0 4px 12px rgba(0,0,0,.08),
+    0 1px 2px rgba(0,0,0,.04);
+}
+.card h3 {
+  font-size: 0.6em;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  opacity: 0.6;
+}
+
+/* FINANCES */
+.finances {
+  width: 60%;
+  height: 17vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.finance-main {
+  font-size: 2.6em;
+  font-weight: 600;
+}
+
+.finance-actions {
+  margin-top: 1em;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.finance-actions button {
+  width: 49%;
+  padding: 0.75em;
+  font-size: 1em;
+  text-transform: uppercase;
+}
+
+/* PROGRESS */
+.progress {
+  width: 38%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.progress-text {
+  width: 100%;
+  font-size: 0.8em;
+  text-align: center;
+  line-height: 1;
+  color: #484e5350;
+  font-weight: 600;
+}
+
+.progress-text span:first-child {
+  display: block;
+  font-size: 1.5em;
+  width: 100%;
+  text-align: center;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: var(--text);
+}
+
+.progress-bar {
+  height: 1em;
+  width: 100%;
+  border-radius: 0.7rem;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+}
+
+.bad {
+  background-color: var(--bad);
+}
+
+.middle {
+  background-color: rgb(255, 230, 0);
+}
+
+.succes {
+  background-color: rgb(109, 255, 25);
+}
+
+.progress-actions {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  height: 34%;
+  column-gap: 5%;
+}
+
+.finance-open {
+  width: 100%;
+  letter-spacing: 0.07em;
+}
+
+/* OVERVIEW */
+.date {
+  color: var(--text);
+  font-size: 2em;
+  margin-top: 1em;
+}
+
+.tasks-section {
+  width: 100%;
+  height: 20vh;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tasks-section section {
+  width: 49%;
+  height: 100%;
+}
+
+/* TASKS */
+.tasks {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  row-gap: 2%;
+  height: 100%;
+}
+
+.tasks-header {
+  display: flex;
+  justify-content: space-between;
+  height: 45%;
+}
+
+.tasks-header button {
+  font-size: 5em;
+}
+
+.daily-list {
+  font-size: 0.95em;
+  font-weight: 300;
+}
+
+.tasks-info {
+  display: flex;
+}
+
+/* WEIGHT */
+.weight {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  row-gap: 5%;
+  height: 100%;
+}
+
+.weight-value {
+  width: 49%;
+  text-transform: lowercase;
+}
+
+.weight-line {
+  width: 100%;
+  height: 10%;
+  border-radius: 0.7rem;
+  overflow: hidden;
+}
+
+.weight-line div {
+  height: 100%;
+}
+
+.weight button {
+  width: 100%;
+  text-transform: uppercase;
+}
+
