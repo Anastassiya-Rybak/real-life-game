@@ -1,4 +1,5 @@
 let db;
+let currDate = null;
 
 const initSupabase = () => {
   if (db) return db;
@@ -35,6 +36,13 @@ function formatDateLocal(isoDate) {
   return `${day}.${month}.${year}`;
 }
 
+function ruDateToISO(dateStr) {
+  if (!dateStr) return null;
+
+  const [day, month, year] = dateStr.split('.');
+
+  return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+}
 // {
 //   budgetLimit: number,
 //   todayCashFlow: number,
@@ -179,9 +187,7 @@ const addDailyTask = async(taskData) => {
     .insert([{
       daily_date: taskData.date,      // YYYY-MM-DD
       act_id: taskData.name,          // связь через name
-      act_point: Number(taskData.point) || 0,
-      act_duration: Number(taskData.duration) || 0,
-      act_time: taskData.time || null
+      act_point: Number(taskData.point) || 0
     }]);
 
   if (errorDaily) throw errorDaily;
@@ -221,14 +227,14 @@ const saveTask = async (taskData) => {
     
       savedData.id = data.id;
 
-      if (taskData.date) {
+      if (taskData.date || currDate) {
         addDailyTask(taskData);
       }
 
       return {
         success: true,
         msg: "Сохранено",
-        addCurrTask: taskData.date === getTodayDate(),
+        addCurrTask: taskData.date === getTodayDate() && !currDate,
         savedData: savedData
       };
     }
@@ -252,9 +258,6 @@ const sendTask = async (arrTasks, type = 'task') => {
   const payload = arrTasks.map(task => ({
     daily_date: todayISO,
     act_id: task.act_name,          // связь по name, как ты и используешь
-    act_point: task.act_point ?? 0,
-    act_duration: task.act_duration ?? null,
-    act_time: task.act_time ?? null,
     done: false
   }));
 
@@ -287,4 +290,39 @@ const getUnspecList = async (sort, block = false) => {
   if (actsError) throw actsError;  
 
   return actsArr;
+}
+
+const getDayPageData = async() => {  
+  const { data: dailyRows, error: dailyError } = await db
+    .from('daily')
+    .select(`id,
+            act_id,
+            done,
+            daily_acts!inner (
+              act_name,
+              act_timer,
+              act_point,
+              act_time,
+              act_sub_acts,
+              act_duration
+            )
+          `)
+    .eq('daily_date', ruDateToISO(currDate))
+    .order('done');
+
+  if (dailyError) throw dailyError;  
+  
+  return dailyRows;
+}
+
+const sendCheckToTask = async (id) => {
+  const { error } = await db
+    .from('daily')
+    .update({ done: true })
+    .eq('id', id);
+
+  if (error) {
+    console.error('Supabase error:', error);
+    throw error;
+  } 
 }

@@ -41,10 +41,14 @@ const addTaskToDay = async () => {
 
     const elTasksCheck = document.getElementById('tasks-check');
 
-    const [label, countStr] = elTasksCheck.textContent.split(' / ');
-    const count = Number(countStr) + choosedTasks.length;
+    if (elTasksCheck) {
+      const [label, countStr] = elTasksCheck.textContent.split(' / ');
+      const count = Number(countStr) + choosedTasks.length;
 
-    elTasksCheck.textContent = `${label} / ${count}`;
+      elTasksCheck.textContent = `${label} / ${count}`;
+    } else {
+      window.location.assign(location.href);
+    }
 
     setTimeout(() => {
       taskAddform.classList.add('hidden');

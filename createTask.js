@@ -24,7 +24,9 @@ const openNewTaskModal = (changedTask = '') => {
   changedTaskID = changedTask;
 }
 
-addNewTask.addEventListener('click', openNewTaskModal);
+if (addNewTask) {
+  addNewTask.addEventListener('click', openNewTaskModal);
+}
 
 taskCreateform.addEventListener('click', (e) => {
   if (!e.target.closest('.modal-content')) {

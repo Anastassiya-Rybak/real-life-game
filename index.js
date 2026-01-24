@@ -51,4 +51,19 @@ const initContent = () => {
     fillDetails();
 }
 
+// const toProcessClick = (e) => {
+//     const elBtnParent = e.target.closest('button');
+
+//     if (!elBtnParent) return;
+
+//     switch (elBtnParent.id) {
+//         case 'daily-list-open':
+//             break;
+    
+//         default:
+//             break;
+//     }
+// }
+
+// document.addEventListener('click', toProcessClick)
 window.addEventListener("DOMContentLoaded", initContent);

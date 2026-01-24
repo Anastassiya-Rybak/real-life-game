@@ -253,6 +253,9 @@ li {
 }
 
 .ghost-btn {
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 0.05em;
   padding: 0.6em;
   border-radius: 0.5rem;
   border: none;
