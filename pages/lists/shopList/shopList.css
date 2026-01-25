@@ -1,0 +1,69 @@
+section div {
+    display: flex;
+    font-size: 0.8em;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: solid 1px rgb(255, 251, 34);
+    padding-bottom: 0.5em;
+}
+
+section ul {
+    width: 95%;
+    margin: 0.5em auto;
+    height: 35vh;
+    overflow-y: scroll;
+    border-radius: 0.5em;
+    padding: 0.5em;
+    background-color: beige;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5em;
+}
+
+section li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+input[type="checkbox"] {
+  -webkit-appearance: none; /* для Safari */
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  background-color: aliceblue;
+  border: 2px solid #333;
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+}
+
+input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  width: 1.5em;
+  height: 1.5em;
+  border: solid #25960f;
+  border-width: 0 0.5em 0.5em 0;
+  transform: rotate(60deg);
+  top: -1em;
+  left: -0.1em;
+}
+
+li label {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+li label h4 {
+    width: 65%;
+}
+
+.modal input:nth-child(3) {
+    display: none;
+}
+.plan input:nth-child(3) {
+    display: flex;
+}

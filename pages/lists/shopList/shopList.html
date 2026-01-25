@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Планировщик</title>
+  <link rel="stylesheet" href="/base.css">
+  <link rel="stylesheet" href="shopList.css">
+</head>
+<body>
+
+<div class="app">
+  <!-- HEADER -->
+  <header class="top">
+    <h1 class="logo">Планеровщик</h1>
+    <div class="top-actions">
+      <a class="icon-btn light-btn" href="/index.html"><img src="/log-out-outlined-svgrepo-com.svg" alt="main"></a>
+      <a class="icon-btn accent-btn" href="/pages/lists/taskList/taskList.html"><hr><hr><hr></a>
+      <button class="icon-btn just-btn">⚙️</button>
+    </div>
+  </header>
+  <!-- MAIN GRID -->
+  <main class="dashboard">
+    <section>
+        <div>
+            <h2>ТЕКУЩИЕ ПОКУПКИ</h2>
+            <button id="add-daily-shop-item" class="icon-btn add-btn">+</button>
+        </div>      
+        <ul class="daily-content">
+        </ul>
+    </section>
+    <section>
+        <div>
+            <h2>ПЛАНОВЫЕ ПОКУПКИ</h2>
+            <button id="add-plan-shop-item" class="icon-btn add-btn">+</button>
+        </div>
+        <ul class="plan-content">
+        </ul>
+    </section>
+  </main>
+</div>
+
+ <!-- новое дело, которого еще нет в общем списке дел. -->
+<div id="modal_item-add" class="modal hidden">
+  <form class="modal-content">
+    <h2>Добавить покупку</h2>
+    <input id="itemName" name="itemName" type="text" placeholder="* Название" />
+    <input type="number" name="itemPriority" id="itemPriority" placeholder="0">
+    <input type="number" name="itemPrice" id="itemPrice" placeholder="0">
+    <button class="modal-task_add-btn primary-btn full" type="submit">Сохранить</button>
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/DBconnect.js"></script>
+<script src="shopList.js"></script>
+
+</body>
+</html>
