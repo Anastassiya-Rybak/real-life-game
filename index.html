@@ -75,7 +75,7 @@
         <div class="weight-line">
           <div class="weight-line-progress"></div>
         </div>
-        <button class="ghost-btn add-btn">Внести вес</button>
+        <button id="weight-add" class="ghost-btn add-btn">Внести вес</button>
         <button class="ghost-btn accent-btn">Статистика</button>
       </section>
     </div>
@@ -126,10 +126,19 @@
   </form>
 </div>
 
+<div id="weight-add-modal" class="modal hidden">
+  <form class="modal-content">
+    <h2>Фиксация веса</h2>
+    <input id="new-weight-value" name="weight" class="modal-weight_value" type="number" />
+    <button class="modal-weight_add-btn primary-btn full" type="submit">Сохранить</button>
+  </form>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="DBconnect.js"></script>
 <script src="createTask.js"></script>
 <script src="/dailyTask.js"></script>
+<script src="/pages/weight/weight.js"></script>
 <script src="index.js"></script>
 
 </body>

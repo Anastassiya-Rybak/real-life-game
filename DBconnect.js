@@ -427,3 +427,16 @@ const saveShopListItem = async (itemData) => {
   }
 
 }
+
+const sendWeightData = async(value) => {
+  try {         
+      const { error } = await db
+      .from("weight-control")
+      .insert({ value: value });
+
+      if (error) console.error("SAVE ERROR:", error);
+  } catch (err) {
+    console.error("SAVE ERROR:", err);
+    throw err;
+  }
+}
