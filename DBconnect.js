@@ -252,7 +252,8 @@ const sendTask = async (arrTasks, type = 'task') => {
   }
 
   // дата ТОЛЬКО в формате YYYY-MM-DD
-  const todayISO = new Date().toISOString().slice(0, 10);
+  const todayISO = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+                    .toISOString().slice(0, 10);
 
   // формируем payload для БД (НЕ мутируем исходные объекты)
   const payload = arrTasks.map(task => ({
