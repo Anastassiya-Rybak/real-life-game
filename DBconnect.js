@@ -276,20 +276,79 @@ const sendTask = async (arrTasks, type = 'task') => {
   };
 };
 
-const getUnspecList = async (sort, block = false) => {
-  if (!block) {
-    block = 'act_name'
-  }
+const getUnspecList = async () => {
   const { data: actsArr, error: actsError } = await db
     .from('daily_acts')
-    .select('id, act_name, act_option, act_timer, act_point, act_date, act_time, act_duration, act_block, block_color, block_option')
-    .not(block, 'is', null)
+    .select('id, act_name, act_option, act_timer, act_point, act_date, act_time, act_duration')
     .eq('act_spec', false)
-    .order(sort, { ascending: false });
+    .order('act_created_at', { ascending: false });
 
   if (actsError) throw actsError;  
 
   return actsArr;
+}
+
+const getBlockList = async() => {
+  const { data: actsArr, error: actsError } = await db
+    .from('act_blocks')
+    .select(`id,block_name,block_color,block_option,sequence,act_name,
+              daily_acts!inner (act_name,act_point,act_duration)`)
+    .order('block_name,sequence');
+
+  if (actsError) throw actsError;  
+
+  return actsArr;
+}
+
+const saveBlock = async(blockData) => {  
+  const dataToDelete  = [];
+  const dataToSave    = [];
+
+  for (let idx=0; idx < blockData.length; idx++) {
+    if ((blockData[idx].delete && blockData[idx].new) || (!blockData[idx].new && !blockData[idx].delete)) continue;
+    
+    const sendData = {
+      act_name: blockData[idx].act_name,
+      block_name: blockData[idx].block_name,
+      block_color: blockData[idx].block_color,
+      block_option: blockData[idx].block_option,
+      sequence: blockData[idx].sequence ? blockData[idx].sequence : 1
+    };
+    
+    if (blockData[idx].delete) { dataToDelete.push(blockData[idx].id); } 
+    else { dataToSave.push(sendData); }
+  };  
+
+  console.log(dataToDelete);
+  
+
+  try {
+    if (dataToSave.length) {
+      const { error: saveError } = await db
+                              .from("act_blocks")
+                              .insert(dataToSave);
+
+      if (saveError) throw saveError;
+    }
+
+    if (dataToDelete.length) {
+      const { error: deleteError } = await db
+                              .from("act_blocks")
+                              .delete()
+                              .in('id', dataToDelete);
+
+      if (deleteError) throw deleteError;
+    }
+
+    return {
+      success: true,
+      msg: "Сохранено",
+    };
+
+  } catch (err) {
+    console.error("SAVE ERROR:", err);
+    throw err;
+  }
 }
 
 const getDayPageData = async() => {  

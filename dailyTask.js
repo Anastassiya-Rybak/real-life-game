@@ -18,9 +18,12 @@ const closeDailyTaskModal = () => {
 const addTaskToDay = async () => {
   let choosedTasks = null;
 
+  if (!modalListData) { modalListData = await getUnspecList(); }
+  console.log(modalBlocksData);
+  
   if (checkedBlock) {
-    choosedTasks = modalListData.filter(el => el.act_block == checkedBlock); 
-    checkedBlock = ''; 
+    choosedTasks = modalListData.filter(e => modalBlocksData.find(el => el.daily_acts.act_name == e.act_name )); 
+    checkedBlock = '';
   } else {
     const checkboxData  = taskAddform.querySelectorAll('input');
     const filteredCheckData = [...checkboxData].filter(el => el.checked);
@@ -102,37 +105,42 @@ const showBlockList = async() => {
   const elContainer = taskAddform.querySelector('.modal-daily_block-content');
   
   elBlocks.classList.remove('hidden');
-
-  if (!modalListData) {
-    modalListData = await getUnspecList('act_point');  
-  } 
   
-  if (!modalBlocksData) { // из списка задач отбираем уникальные имена блоков, а потом по этому же имени просто отберем все относящиеся задачи и сохраним.
-    let blockOfListData = modalListData.filter(el => Boolean(el.act_block) == true);
+  if (!modalBlocksData) { 
+    let blockOfListData = await getBlockList();
+    
     modalBlocksData = Object.values(
-      blockOfListData.reduce((acc, { act_block, block_color, act_point, act_duration }) => {
-        if (!acc[act_block]) {
-          acc[act_block] = { act_block, block_color, act_point: 0, act_duration: 0 };
+      blockOfListData.reduce((acc, item) => {
+        const key = `${item.block_name}`;
+
+        if (!acc[key]) {
+          acc[key] = {
+            block_name: item.block_name,
+            block_color: item.block_color,
+            daily_acts: item.daily_acts,
+            total_points: 0,
+            total_duration: 0
+          };
         }
-        acc[act_block].act_point += act_point;
-        acc[act_block].act_duration  += act_duration;
-        acc[act_block].block_color = block_color;
+
+        acc[key].total_points += Number(item.daily_acts.act_point) || 0;
+        acc[key].total_duration += Number(item.daily_acts.act_duration) || 0;
         return acc;
       }, {})
-    );
+    );    
   }
 
   modalBlocksData.forEach(el => {
     const elItemButton = document.createElement('button');
     elItemButton.style.backgroundColor = el.block_color;
     elItemButton.className             = 'modal-daily_block-item';
-    elItemButton.id                    = el.act_block;
+    elItemButton.id                    = el.block_name;
     
     elContainer.append(elItemButton);
 
-    elItemButton.innerHTML = `<span>${el.act_block}</span>
+    elItemButton.innerHTML = `<span>${el.block_name}</span>
           <div class="madal-daily_block-dop">
-            <span>${el.act_duration} мин</span><hr><span>${el.act_point}</span>
+            <span>${el.total_duration} мин</span><hr><span>${el.total_points}</span>
           </div>`;
   });
 

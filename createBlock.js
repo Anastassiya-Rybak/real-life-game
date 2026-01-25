@@ -5,38 +5,38 @@ let changedBlockName     = '';
 let modalListData         = null;
 let choosedTasks          = [];
 
-const createBlockTaskListEl = (data) => {
-    const elLi = document.createElement('li');
-    elLi.id = data.id;
-    elLi.innerHTML = `<h4>${data.act_name}</h4>
-                      <p>${data.act_duration} | <span style="color: green;">${data.act_point}</span></p>
-                      <button class="icon-btn bad-btn">x</button>`;
+const createBlockTaskListEl = (data) => {  
+  const taskData = data.daily_acts;
+  const elLi = document.createElement('li');
+  elLi.id = data.id;
+  elLi.innerHTML = `<h4>${taskData.act_name}</h4>
+                    <p>${taskData.act_duration} | <span style="color: green;">${taskData.act_point}</span></p>
+                    <button class="icon-btn bad-btn">x</button>`;
 
-    elTaskListContainer.append(elLi);
+  elTaskListContainer.append(elLi);
 }
 
 const openNewBlockModal = (changedBlock = '') => {
   blockCreateform.classList.remove('hidden');  
   
   if (typeof changedBlock !== 'string' || !changedBlock) return;
-  console.log(blocksData);
-
-  choosedTasks = structuredClone(blocksData.find(el => el[0].act_block == changedBlock));
   
+  choosedTasks = blocksData.filter(el => el[0].block_name == changedBlock );
+
   const elBlockName = document.getElementById('new-block-name');
-  elBlockName.value = choosedTasks[0].act_block;
+  elBlockName.value = choosedTasks[0][0].block_name;
 
   const elBlockColor = document.getElementById('block-color');
-  elBlockColor.value = choosedTasks[0].block_color;
+  elBlockColor.value = choosedTasks[0][0].block_color;
 
   const elBlockOption = document.getElementById('new-block-option');
-  elBlockOption.value = choosedTasks[0].block_option;
+  elBlockOption.value = choosedTasks[0][0].block_option;
   
   for (let i = elTaskListContainer.children.length - 1; i >= 0; i--) {
     elTaskListContainer.children[i].remove();
   }
 
-  choosedTasks.forEach(el => {
+  choosedTasks[0].forEach(el => {
     createBlockTaskListEl(el);
   });
 
@@ -82,9 +82,10 @@ blockCreateform.addEventListener('click', (e) => {
 
   if (currBtn.className.includes('bad-btn')) {
     const deletedId = currBtn.closest('li').id;
-    choosedTasks.forEach(el => {
+
+    choosedTasks[0].forEach(el => {            
       if (el.id == deletedId) {        
-        el.act_block = null;
+        el.delete = true;
       }
     });
 
@@ -99,8 +100,12 @@ const sendNewBlock = async(e) => {
   try {
     addBtn.disabled = true;
     addBtn.textContent = 'Сохранение...';
+
+    let dataToSend = choosedTasks;
+
+    if (Array.isArray(choosedTasks[0])) dataToSend = choosedTasks[0];
     
-    const res = await saveTask(choosedTasks);
+    const res = await saveBlock(dataToSend);
 
     addBtn.textContent = res.msg || 'Сохранено';
     
@@ -127,7 +132,7 @@ const showTaskList = async() => {
   modalForm.classList.add('hidden');
 
   if (!modalListData) {
-    modalListData = await getUnspecList('act_point');  
+    modalListData = await getUnspecList('act_created_at, act_point');  
   }
 
   modalListData.forEach(el => {
@@ -156,17 +161,32 @@ const saveTaskList = () => {
   blockCreateform.children[1].classList.add('hidden');
   blockCreateform.children[0].classList.remove('hidden');
   
-  const elBlockName = document.getElementById('new-block-name').value;
-  const checkboxData  = blockCreateform.children[1].querySelectorAll('input');
+  const elBlockName       = document.getElementById('new-block-name');
+  const elBlockOption     = document.getElementById('new-block-option');
+  const elBlockColor      = document.getElementById('block-color');
+  const checkboxData      = blockCreateform.children[1].querySelectorAll('input');
   const filteredCheckData = [...checkboxData].filter(el => el.checked);
-  const filteredTasks = modalListData.filter(e => filteredCheckData.find(el => el.id == e.id));  
+  const filteredTasks     = modalListData.filter(e => filteredCheckData.find(el => el.id == e.id));  
  
-  filteredTasks.forEach(el => { el.act_block = elBlockName; });
+  const newBlockPosition = [];
 
-  filteredTasks.forEach(el => {
+  filteredTasks.forEach(el => { 
+    newBlockPosition.push({
+      id: elBlockName.value + el.act_name,
+      new: true,
+      delete: false,
+      block_name: elBlockName.value,
+      act_name: el.act_name,
+      block_color: elBlockColor.value,
+      block_option: elBlockOption.value,
+      daily_acts: el
+    });
+  });
+
+  newBlockPosition.forEach(el => {
     createBlockTaskListEl(el);
   });
   
-  choosedTasks = choosedTasks.concat(filteredTasks);
+  choosedTasks = choosedTasks.concat(newBlockPosition);
 }
 
