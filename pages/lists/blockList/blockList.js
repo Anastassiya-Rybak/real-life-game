@@ -18,7 +18,7 @@ const toggleInner = (e) => {
 const creatBlockEl = (blockData) => {
     const elItemContainer = document.createElement('div');
     elItemContainer.className   = 'dashboard_block';
-    elItemContainer.id          = blockData[0].act_block;
+    elItemContainer.id          = blockData[0].block_name;
 
     elContentList.append(elItemContainer);
 
@@ -34,20 +34,22 @@ const creatBlockEl = (blockData) => {
     elItemDetailes.append(elUl);
 
     blockData.forEach(elem => {
+        const actsData = elem.daily_acts;
+
         const elLi = document.createElement('li');
         elUl.append(elLi);
 
         const elH = document.createElement('h5');
-        elH.textContent = elem.act_name;
+        elH.textContent = actsData.act_name;
 
         const elP = document.createElement('p');
-        elP.innerHTML = `${elem.act_duration} | <span style="color: green;">${elem.act_point}</span>`;
+        elP.innerHTML = `${actsData.act_duration} | <span style="color: green;">${actsData.act_point}</span>`;
 
         elLi.append(elH);
         elLi.append(elP);
 
-        blockPointSum += elem.act_point;
-        blockDurationSum += elem.act_duration;
+        blockPointSum += actsData.act_point;
+        blockDurationSum += actsData.act_duration;
     });
 
     const elBtn = document.createElement('button');
@@ -59,27 +61,27 @@ const creatBlockEl = (blockData) => {
     const elItemTitle = document.createElement('div');
     elItemTitle.className = 'dashboard_title-inner';
     elItemTitle.style = `background-color:${blockData[0].block_color};`;
-    elItemTitle.innerHTML = `<h3>${blockData[0].act_block}</h3>
+    elItemTitle.innerHTML = `<h3>${blockData[0].block_name}</h3>
                             <p><span style="color: green;">${blockPointSum}</span> | ${blockDurationSum} мин</p>`;
     
     elItemContainer.prepend(elItemTitle);
 }
 
 const fillContent = async() => {
-    const blocksUnsortData = await getUnspecList('act_point', 'act_block');
-
-    blocksUnsortData.sort((a, b) => a.act_block.localeCompare(b.act_block));
+    const blocksUnsortData = await getBlockList();
 
     blocksData      = [];
     let interVar    = { num: -1, name: '' };
 
     blocksUnsortData.forEach(el => {
-        if (interVar.name !== el.act_block){
-            interVar.name = el.act_block;
+        if (interVar.name !== el.block_name){
+            interVar.name = el.block_name;
             blocksData.push([]);
             interVar.num += 1;
         }    
         blocksData[interVar.num].push(el);
+        el.delete = false;
+        el.new = false;
     });
 
     for (const block of blocksData) {
