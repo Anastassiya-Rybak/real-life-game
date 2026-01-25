@@ -19,7 +19,6 @@ const addTaskToDay = async () => {
   let choosedTasks = null;
 
   if (!modalListData) { modalListData = await getUnspecList(); }
-  console.log(modalBlocksData);
   
   if (checkedBlock) {
     choosedTasks = modalListData.filter(e => modalBlocksData.find(el => el.daily_acts.act_name == e.act_name )); 
