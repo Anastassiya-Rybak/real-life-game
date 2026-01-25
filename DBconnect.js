@@ -281,7 +281,7 @@ const getUnspecList = async () => {
     .from('daily_acts')
     .select('id, act_name, act_option, act_timer, act_point, act_date, act_time, act_duration')
     .eq('act_spec', false)
-    .order('act_created_at', { ascending: false });
+    .order('act_created_at');
 
   if (actsError) throw actsError;  
 
@@ -317,10 +317,7 @@ const saveBlock = async(blockData) => {
     
     if (blockData[idx].delete) { dataToDelete.push(blockData[idx].id); } 
     else { dataToSave.push(sendData); }
-  };  
-
-  console.log(dataToDelete);
-  
+  };    
 
   try {
     if (dataToSave.length) {
@@ -384,4 +381,49 @@ const sendCheckToTask = async (id) => {
     console.error('Supabase error:', error);
     throw error;
   } 
+}
+
+const getShopListData = async() => {
+  const { data, error } = await db
+    .from('shop_list')
+    .select('*')
+    .order('bought,itemPriority');
+
+  if (error) throw error;  
+
+  return data;
+}
+
+const sendCheckToShopList = async (id, value) => {
+  const { error } = await db
+    .from('shop_list')
+    .update({ bought: value })
+    .eq('id', id);
+
+  if (error) {
+    console.error('Supabase error:', error);
+    throw error;
+  } 
+}
+
+const saveShopListItem = async (itemData) => {    
+  try {         
+      const { data, error } = await db
+      .from("shop_list")
+      .insert(itemData)
+      .select('id')
+      .single();
+
+      if (error) console.error("SAVE ERROR:", error);
+    
+      return {
+        success: true,
+        msg: "Сохранено",
+        id: data.id
+      };
+  } catch (err) {
+    console.error("SAVE ERROR:", err);
+    throw err;
+  }
+
 }
