@@ -44,6 +44,7 @@ const fillDetails = async () => {
     elWeightValue[0].textContent = currData.currentWeight;
     elWeightValue[1].textContent = currData.weightGoal;
 
+    // document.addEventListener('click', toProcessClick)
 }
 
 const initContent = () => {
@@ -51,19 +52,4 @@ const initContent = () => {
     fillDetails();
 }
 
-// const toProcessClick = (e) => {
-//     const elBtnParent = e.target.closest('button');
-
-//     if (!elBtnParent) return;
-
-//     switch (elBtnParent.id) {
-//         case 'daily-list-open':
-//             break;
-    
-//         default:
-//             break;
-//     }
-// }
-
-// document.addEventListener('click', toProcessClick)
 window.addEventListener("DOMContentLoaded", initContent);

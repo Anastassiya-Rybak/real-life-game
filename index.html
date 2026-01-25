@@ -48,7 +48,7 @@
         </div>
         <p class="progress-text"><span id="saved-summ">0</span> из <span id="goal-summ">0</span></p>
 
-        <div class="progress-actions">
+        <div id="fin-goal-flow" class="progress-actions">
           <button class="square-btn bad-btn">−</button>
           <button class="square-btn add-btn">+</button>
         </div>
@@ -75,7 +75,7 @@
         <div class="weight-line">
           <div class="weight-line-progress"></div>
         </div>
-        <button class="ghost-btn add-btn">Внести вес</button>
+        <button id="weight-add" class="ghost-btn add-btn">Внести вес</button>
         <button class="ghost-btn accent-btn">Статистика</button>
       </section>
     </div>
@@ -126,10 +126,28 @@
   </form>
 </div>
 
+<div id="weight-add-modal" class="modal hidden">
+  <form class="modal-content">
+    <h2>Фиксация веса</h2>
+    <input id="new-weight-value" name="weight" class="modal-weight_value" type="number" />
+    <button class="modal-weight_add-btn primary-btn full" type="submit">Сохранить</button>
+  </form>
+</div>
+
+<div id="fin-goal-flow-modal" class="modal hidden">
+  <form class="modal-content">
+    <h2>Фиксация ДДС</h2>
+    <input id="new-fin-goal-flow-value" name="fin-goal-flow" class="modal-fin-goal-flow_value" type="number" />
+    <button class="modal-fin-goal-flow_add-btn primary-btn full" type="submit">Сохранить</button>
+  </form>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="DBconnect.js"></script>
 <script src="createTask.js"></script>
 <script src="/dailyTask.js"></script>
+<script src="/pages/weight/weight.js"></script>
+<script src="/pages/money/money.js"></script>
 <script src="index.js"></script>
 
 </body>
