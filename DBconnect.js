@@ -252,8 +252,7 @@ const sendTask = async (arrTasks, type = 'task') => {
   }
 
   // дата ТОЛЬКО в формате YYYY-MM-DD
-  const todayISO = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-                    .toISOString().slice(0, 10);
+  const todayISO = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 
   // формируем payload для БД (НЕ мутируем исходные объекты)
   const payload = arrTasks.map(task => ({
@@ -261,6 +260,9 @@ const sendTask = async (arrTasks, type = 'task') => {
     act_id: task.act_name,          // связь по name, как ты и используешь
     done: false
   }));
+
+          console.log('Переработанные данные блока');
+          console.log(payload);
 
   const { error } = await db
     .from('daily')
@@ -304,8 +306,13 @@ const getBlockList = async() => {
 const saveBlock = async(blockData) => {  
   const dataToDelete  = [];
   const dataToSave    = [];
-
+        console.log(`Состав к отправке:`);
+        console.log(choosedTasks);
+        
   for (let idx=0; idx < blockData.length; idx++) {
+            console.log(`Позиция ${idx + 1} не отправится:`);
+            console.log((blockData[idx].delete && blockData[idx].new) || (!blockData[idx].new && !blockData[idx].delete));
+            
     if ((blockData[idx].delete && blockData[idx].new) || (!blockData[idx].new && !blockData[idx].delete)) continue;
     
     const sendData = {
@@ -319,6 +326,13 @@ const saveBlock = async(blockData) => {
     if (blockData[idx].delete) { dataToDelete.push(blockData[idx].id); } 
     else { dataToSave.push(sendData); }
   };    
+
+            console.log(`Массив к удалению:`);
+            console.log(dataToDelete);
+            
+            console.log(`Массив к сохранению:`);
+            console.log(dataToSave);
+            
 
   try {
     if (dataToSave.length) {
