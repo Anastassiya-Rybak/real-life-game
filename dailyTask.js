@@ -21,8 +21,14 @@ const addTaskToDay = async () => {
   if (!modalListData) { modalListData = await getUnspecList(); }
   
   if (checkedBlock) {
-    choosedTasks = modalListData.filter(e => modalBlocksData.find(el => el.daily_acts.act_name == e.act_name )); 
-    checkedBlock = '';
+            console.log('Данные блоков для фильтрации');
+            console.log(modalBlocksData);
+
+            console.log('Данные задач которые фильтруются');
+            console.log(modalListData);
+    const blocksDailyTasks = modalBlocksData.find(el => el.block_name == checkedBlock).daily_acts;
+    choosedTasks = modalListData.filter(e => blocksDailyTasks.find(el => el.act_name == e.act_name )); 
+    checkedBlock = null;
   } else {
     const checkboxData  = taskAddform.querySelectorAll('input');
     const filteredCheckData = [...checkboxData].filter(el => el.checked);
@@ -37,6 +43,9 @@ const addTaskToDay = async () => {
     addBtn.disabled = true;
     addBtn.textContent = 'Сохранение...';
 
+    console.log('Задачи из блока к сохранению:');
+    console.log(choosedTasks);
+    
     const res = await sendTask(choosedTasks);
 
     addBtn.textContent = res.msg || 'Сохранено';
@@ -107,6 +116,9 @@ const showBlockList = async() => {
   
   if (!modalBlocksData) { 
     let blockOfListData = await getBlockList();
+    console.log('Обрабатываемые данные блоков');
+    console.log(blockOfListData);
+    
     
     modalBlocksData = Object.values(
       blockOfListData.reduce((acc, item) => {
@@ -116,7 +128,7 @@ const showBlockList = async() => {
           acc[key] = {
             block_name: item.block_name,
             block_color: item.block_color,
-            daily_acts: item.daily_acts,
+            daily_acts: [],
             total_points: 0,
             total_duration: 0
           };
@@ -124,6 +136,7 @@ const showBlockList = async() => {
 
         acc[key].total_points += Number(item.daily_acts.act_point) || 0;
         acc[key].total_duration += Number(item.daily_acts.act_duration) || 0;
+        acc[key].daily_acts.push(item.daily_acts);
         return acc;
       }, {})
     );    
@@ -143,7 +156,21 @@ const showBlockList = async() => {
           </div>`;
   });
 
+  blockCheckAct('');
 }
+
+const blockCheckAct = (id) => {
+  checkedBlock = id;
+
+  const arrBlocksEl = document.querySelectorAll('.modal-daily_block-item');
+
+  arrBlocksEl.forEach(elem => {
+    if (elem.id == id) { elem.classList.add('checked'); }
+    else { elem.classList.remove('checked'); }
+  })
+
+}
+
 
 const chooseDailyTask = async (e) => {
   if (!e.target.closest('.modal-content')) {
@@ -158,7 +185,7 @@ const chooseDailyTask = async (e) => {
   e.preventDefault();
 
   if (currBtn.className == 'modal-daily_block-item') { 
-    checkedBlock = currBtn.children[0].textContent;
+    blockCheckAct(currBtn.id);    
     return;
   }
   

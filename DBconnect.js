@@ -123,6 +123,8 @@ async function getMainPageData() {
   const doneDaily = (dailyRows ?? []).filter(row => row.done == true);
   const doneCount = doneDaily.length;
 
+  console.log(doneDaily);
+  
   const donePoints = doneDaily.reduce(
     (sum, row) => sum + (row.act_point ?? 0),
     0
@@ -252,8 +254,7 @@ const sendTask = async (arrTasks, type = 'task') => {
   }
 
   // дата ТОЛЬКО в формате YYYY-MM-DD
-  const todayISO = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-                    .toISOString().slice(0, 10);
+  const todayISO = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 
   // формируем payload для БД (НЕ мутируем исходные объекты)
   const payload = arrTasks.map(task => ({
@@ -261,6 +262,9 @@ const sendTask = async (arrTasks, type = 'task') => {
     act_id: task.act_name,          // связь по name, как ты и используешь
     done: false
   }));
+
+          console.log('Переработанные данные блока');
+          console.log(payload);
 
   const { error } = await db
     .from('daily')
@@ -294,7 +298,8 @@ const getBlockList = async() => {
     .from('act_blocks')
     .select(`id,block_name,block_color,block_option,sequence,act_name,
               daily_acts!inner (act_name,act_point,act_duration)`)
-    .order('block_name,sequence');
+    .order('block_name')
+    .order('sequence');
 
   if (actsError) throw actsError;  
 
@@ -304,8 +309,13 @@ const getBlockList = async() => {
 const saveBlock = async(blockData) => {  
   const dataToDelete  = [];
   const dataToSave    = [];
-
+        console.log(`Состав к отправке:`);
+        console.log(choosedTasks);
+        
   for (let idx=0; idx < blockData.length; idx++) {
+            console.log(`Позиция ${idx + 1} не отправится:`);
+            console.log((blockData[idx].delete && blockData[idx].new) || (!blockData[idx].new && !blockData[idx].delete));
+            
     if ((blockData[idx].delete && blockData[idx].new) || (!blockData[idx].new && !blockData[idx].delete)) continue;
     
     const sendData = {
@@ -319,7 +329,11 @@ const saveBlock = async(blockData) => {
     if (blockData[idx].delete) { dataToDelete.push(blockData[idx].id); } 
     else { dataToSave.push(sendData); }
   };    
-
+            console.log(`Массив к удалению:`);
+            console.log(dataToDelete);
+            
+            console.log(`Массив к сохранению:`);
+            console.log(dataToSave);
   try {
     if (dataToSave.length) {
       const { error: saveError } = await db
@@ -388,7 +402,8 @@ const getShopListData = async() => {
   const { data, error } = await db
     .from('shop_list')
     .select('*')
-    .order('bought,itemPriority');
+    .order('bought', { ascending: false }) // false → true
+    .order('itemPriority', { ascending: true });; // true - false
 
   if (error) throw error;  
 

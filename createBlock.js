@@ -1,6 +1,8 @@
 const addNewBlock        = document.getElementById('add-new-block-btn');
 const blockCreateform    = document.getElementById('modal_block-add');
 const elTaskListContainer = blockCreateform.querySelector('.modal-block_task-list');
+const elList      = blockCreateform.querySelector('.modal-task_list');
+
 let changedBlockName     = '';
 let modalListData         = null;
 let choosedTasks          = [];
@@ -17,7 +19,8 @@ const createBlockTaskListEl = (data) => {
 }
 
 const openNewBlockModal = (changedBlock = '') => {
-  blockCreateform.classList.remove('hidden');  
+  blockCreateform.classList.remove('hidden'); 
+  console.log(`Изменяемый блок:\n ${changedBlock}`);
   
   if (typeof changedBlock !== 'string' || !changedBlock) return;
   
@@ -55,6 +58,7 @@ blockCreateform.addEventListener('click', (e) => {
     blockCreateform.children[1].reset();
 
     choosedTasks = [];
+    // может поможет зануление переменной изменяемого блока? хотя как
     for (let i = elTaskListContainer.children.length - 1; i >= 0; i--) {
       elTaskListContainer.children[i].remove();
     }
@@ -101,9 +105,7 @@ const sendNewBlock = async(e) => {
     addBtn.disabled = true;
     addBtn.textContent = 'Сохранение...';
 
-    let dataToSend = choosedTasks;
-
-    if (Array.isArray(choosedTasks[0])) dataToSend = choosedTasks[0];
+    let dataToSend = choosedTasks.flat(Infinity);
     
     const res = await saveBlock(dataToSend);
 
@@ -125,7 +127,6 @@ const sendNewBlock = async(e) => {
 
 const showTaskList = async() => {
   const modalForm    = document.querySelector('.modal-content');
-  const elList      = blockCreateform.querySelector('.modal-task_list');
   const elContainer = blockCreateform.querySelector('.modal-task_list-content');
   
   elList.classList.remove('hidden');
@@ -186,7 +187,16 @@ const saveTaskList = () => {
   newBlockPosition.forEach(el => {
     createBlockTaskListEl(el);
   });
+
+        console.log(`Добавленные задачи:`);
+        console.log(newBlockPosition);
+        
   
   choosedTasks = choosedTasks.concat(newBlockPosition);
+
+        console.log(`Актуальный состав задач блока:`);
+        console.log(choosedTasks);
+
+  elList.reset();
 }
 

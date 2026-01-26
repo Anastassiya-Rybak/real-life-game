@@ -162,10 +162,10 @@ li {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
-  column-gap: 2%;
+  justify-content: space-evenly;
+  row-gap: 1em;
   width: 100%;
-  height: 40vh;
+  max-height: 40vh;
   overflow-y: scroll;
 }
 
@@ -194,6 +194,7 @@ li {
   justify-content: space-between;
   align-items: center;
   max-height: 4em;
+  position: relative;
 }
 
 .modal-daily_block-item span:first-child {
@@ -384,3 +385,7 @@ button {
  }
  
  /* footer end */
+
+.checked {
+  border: solid 0.3em rgb(255, 15, 6) !important;
+}
