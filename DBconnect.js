@@ -123,6 +123,8 @@ async function getMainPageData() {
   const doneDaily = (dailyRows ?? []).filter(row => row.done == true);
   const doneCount = doneDaily.length;
 
+  console.log(doneDaily);
+  
   const donePoints = doneDaily.reduce(
     (sum, row) => sum + (row.act_point ?? 0),
     0
@@ -296,7 +298,8 @@ const getBlockList = async() => {
     .from('act_blocks')
     .select(`id,block_name,block_color,block_option,sequence,act_name,
               daily_acts!inner (act_name,act_point,act_duration)`)
-    .order('block_name,sequence');
+    .order('block_name')
+    .order('sequence');
 
   if (actsError) throw actsError;  
 
@@ -326,14 +329,11 @@ const saveBlock = async(blockData) => {
     if (blockData[idx].delete) { dataToDelete.push(blockData[idx].id); } 
     else { dataToSave.push(sendData); }
   };    
-
             console.log(`Массив к удалению:`);
             console.log(dataToDelete);
             
             console.log(`Массив к сохранению:`);
             console.log(dataToSave);
-            
-
   try {
     if (dataToSave.length) {
       const { error: saveError } = await db
@@ -402,7 +402,8 @@ const getShopListData = async() => {
   const { data, error } = await db
     .from('shop_list')
     .select('*')
-    .order('bought,itemPriority');
+    .order('bought', { ascending: false }) // false → true
+    .order('itemPriority', { ascending: true });; // true - false
 
   if (error) throw error;  
 

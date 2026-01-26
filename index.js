@@ -2,6 +2,9 @@ const listData = null;
 
 const fillDetails = async () => {
     const currData = await getMainPageData();
+
+    console.log(currData);
+    
     
     const elDate            = document.querySelector('.date');
     const elLimitSection    = document.querySelectorAll('.limit');
