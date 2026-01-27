@@ -184,6 +184,9 @@ async function getMainPageData() {
 }
 
 const addDailyTask = async(taskData) => {
+  console.log("Данные добавляемые в дату");
+  console.log(taskData);
+  
   const { error: errorDaily } = await db
     .from('daily')
     .insert([{
@@ -259,8 +262,9 @@ const sendTask = async (arrTasks, type = 'task') => {
   // формируем payload для БД (НЕ мутируем исходные объекты)
   const payload = arrTasks.map(task => ({
     daily_date: todayISO,
-    act_id: task.act_name,          // связь по name, как ты и используешь
-    done: false
+    act_id: task.act_name, // связь по name, как ты и используешь
+    done: false,
+    act_point: task.act_point
   }));
 
           console.log('Переработанные данные блока');
