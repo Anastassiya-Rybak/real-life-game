@@ -64,8 +64,8 @@ const addTaskToDay = async () => {
       const count = Number(countStr) + choosedTasks.length;
 
       elTasksCheck.textContent = `${label} / ${count}`;
-    } else {
-      window.location.assign(location.href);
+    } else if (currDate) {
+      fillDetails();
     }
 
     setTimeout(() => {

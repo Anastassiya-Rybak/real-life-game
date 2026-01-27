@@ -32,6 +32,8 @@ const fillDetails = async () => {
 
     dailyTaskData = await getDayPageData();
     
+    elContent.innerHTML = '';
+
     dailyTaskData.forEach(el => {
         const elLi = document.createElement('li');
         elLi.id = el.id;
@@ -78,7 +80,7 @@ const processDateClick = (e) => {
     
     if (!currEl) return; 
 
-    currDate = new Date(ruDateToISO(currDate));
+    if (currEl.id !== 'curr-day') currDate = new Date(ruDateToISO(currDate));
 
     switch (currEl.id) {
         case 'curr-day':

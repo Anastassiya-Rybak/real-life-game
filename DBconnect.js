@@ -262,7 +262,7 @@ const sendTask = async (arrTasks, type = 'task') => {
 
   // формируем payload для БД (НЕ мутируем исходные объекты)
   const payload = arrTasks.map(task => ({
-    daily_date: todayISO,
+    daily_date: ruDateToISO(currDate) || todayISO,
     act_id: task.act_name, // связь по name, как ты и используешь
     done: false,
     act_point: task.act_point
