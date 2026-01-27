@@ -15,6 +15,13 @@ const closeDailyTaskModal = () => {
   });
 }
 
+const resetTaskAddForm = () => {
+  taskAddform.children[0].reset();
+  taskAddform.children[0].children[2].classList.add('hidden');
+  taskAddform.children[0].children[3].classList.add('hidden');
+  taskAddform.children[0].children[1].classList.remove('hidden');
+}
+
 const addTaskToDay = async () => {
   let choosedTasks = null;
 
@@ -63,7 +70,7 @@ const addTaskToDay = async () => {
 
     setTimeout(() => {
       taskAddform.classList.add('hidden');
-      taskAddform.children[0].reset();
+      resetTaskAddForm();
       addBtn.textContent = 'Сохранить';
       addBtn.disabled = false;
     }, 600);
