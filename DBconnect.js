@@ -23,7 +23,8 @@ const getConstValue = async (constName) => {
 }
 
 function getTodayDate() {
-  const today = new Date();
+  let today = new Date();
+  
   const localDate = today.getFullYear() + '-' +
                   String(today.getMonth() + 1).padStart(2, '0') + '-' +
                   String(today.getDate()).padStart(2, '0');

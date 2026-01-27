@@ -3,9 +3,6 @@ const listData = null;
 const fillDetails = async () => {
     const currData = await getMainPageData();
 
-    console.log(currData);
-    
-    
     const elDate            = document.querySelector('.date');
     const elLimitSection    = document.querySelectorAll('.limit');
     const elSavedSum        = document.getElementById('saved-summ');
@@ -37,7 +34,7 @@ const fillDetails = async () => {
     elTasksCheck.textContent = `${currData.daily.done} / ${currData.daily.total}`;
 
     const weightPercent = ((currData.weightStart - currData.currentWeight) / (currData.weightStart - currData.weightGoal)) * 100;
-
+    
     if (weightPercent <= 30) { elWeightProgressBar.classList.add('bad'); }
     else if (weightPercent <= 75) { elWeightProgressBar.classList.add('middle'); }
     else { elWeightProgressBar.classList.add('succes'); }

@@ -3,7 +3,16 @@
     width: 70%;
     margin: 0 auto;
     justify-content: space-around;
+    align-items: center;
     position: relative;
+}
+
+.date-content input {
+  border: none;
+  background: none;
+  font-size: 2em;
+  width: 67%;
+  margin: 0 0.4em;
 }
 
 .date-content_switch {
@@ -12,14 +21,12 @@
     width: 70%; 
 }
 
-.dashboard_content {
-    height: 70vh;
-    overflow-y: scroll;
-}
-
 .list-content {
     margin-top: 2em;
     row-gap: 1em;
+    height: 70vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .list-content li {
@@ -62,3 +69,48 @@ footer {
     display: flex;
     justify-content: center;
 }
+
+/* стрелки переключения даты */
+/* кнопка */
+.arrow {
+  width: 3em;
+  height: 3em;
+  border-radius: 0.5em;
+  background: #4caf50;
+  border: none;
+  position: relative;
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.3);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+/* стрелка */
+.arrow::before {
+  content: '';
+  width: 0.8em;
+  height: 0.8em;
+  border-top: 0.5em solid #f3f3f3;
+  border-right: 0.5em solid #f3f3f3;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+/* ← */
+.arrow.left::before {
+  transform: translate(-50%, -50%) rotate(-135deg);
+}
+
+/* → */
+.arrow.right::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.arrow:active {
+  transform: scale(0.9);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.25),
+    inset 0 2px 4px rgba(0,0,0,0.2);
+}
+/* конец стрелки */

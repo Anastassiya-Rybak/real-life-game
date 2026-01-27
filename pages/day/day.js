@@ -1,4 +1,5 @@
 const listData  = null;
+const elSwitchDate = document.getElementById('switch-date-btn');
 const elCurrDate = document.getElementById('curr-day');
 const elContent = document.querySelector('.list-content');
 
@@ -23,9 +24,11 @@ const processTaskClick = (e) => {
 }
 
 const fillDetails = async () => {
-    currDate = formatDateLocal(getTodayDate());
+    if (!currDate) {
+        currDate = formatDateLocal(getTodayDate());
 
-    elCurrDate.textContent = currDate;
+        elCurrDate.value = getTodayDate();
+    }
 
     dailyTaskData = await getDayPageData();
     
@@ -51,12 +54,63 @@ const fillDetails = async () => {
                         </div>`;
     });
 
+}
+
+const formatForInputDate = (date) => {
+  console.log(date);
+  if (!(date instanceof Date) || isNaN(date)) return '';
+  
+  return date.toISOString().slice(0, 10);
+};
+
+const switchCurrDate = () => {
+    elSwitchDate.classList.add('hidden');
+
+    currDate = formatDateLocal(elCurrDate.value);
+
+    elContent.innerHTML = '';
+
+    fillDetails();
+}
+
+const processDateClick = (e) => {
+    const currEl = e.target.closest('button') || e.target.closest('input');
+    
+    if (!currEl) return; 
+
+    currDate = new Date(ruDateToISO(currDate));
+
+    switch (currEl.id) {
+        case 'curr-day':
+            elSwitchDate.classList.remove('hidden');
+            break;
+        case 'switch-date-btn':
+            switchCurrDate();
+            break;
+        case 'prev-day-btn':
+            currDate.setDate(currDate.getDate() - 1);
+            elCurrDate.value = formatForInputDate(currDate);
+            switchCurrDate();
+            break;
+        case 'next-day-btn':
+            currDate.setDate(currDate.getDate() + 1);
+            elCurrDate.value = formatForInputDate(currDate);
+            switchCurrDate();
+            break;
+        default:
+            break;
+    }
+}
+
+const initListeners = () => {
     elContent.addEventListener('click', processTaskClick);
+    document.querySelector('.date-content').addEventListener('click', processDateClick)
 }
 
 const initContent = () => {
     initSupabase();
     fillDetails();
+    initListeners();
 }
 
 window.addEventListener("DOMContentLoaded", initContent);
