@@ -5,7 +5,7 @@ const toggleWeightAddForm = () => {
     weightAddForm.classList.toggle('hidden');
 }
 
-const saveWeight = () => {
+const saveWeight = () => {    
     sendWeightData(document.getElementById('new-weight-value').value);        
 }
 
