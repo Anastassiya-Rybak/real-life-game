@@ -260,10 +260,9 @@ const sendTask = async (arrTasks, type = 'task') => {
   // дата ТОЛЬКО в формате YYYY-MM-DD
   const todayISO = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 
-  // формируем payload для БД (НЕ мутируем исходные объекты)
   const payload = arrTasks.map(task => ({
     daily_date: ruDateToISO(currDate) || todayISO,
-    act_id: task.act_name, // связь по name, как ты и используешь
+    act_id: task.act_name,
     done: false,
     act_point: task.act_point
   }));
@@ -473,4 +472,33 @@ const sendFinGoalFlowData = async(value, type) => {
     console.error("SAVE ERROR:", err);
     throw err;
   }
+}
+
+const sendTechTaskData = async (value) => {    
+  try {         
+      const { data, error } = await db.from("tech_tasks").insert({ value: value }).select('*').single();
+
+      if (error) console.error("SAVE ERROR:", error);
+
+      return data;
+  } catch (err) {
+    console.error("SAVE ERROR:", err);
+    throw err;
+  }
+}
+
+const getTechTasksData = async() => {
+  const { data, error } = await db
+    .from('tech_tasks')
+    .select('*')
+
+  if (error) throw error;  
+
+  return data;
+}
+
+const deleteTechTask = async(elId) => {
+  const { error } = await db.from('tech_tasks').delete().eq('id', elId);
+
+  if (error) throw error;  
 }

@@ -383,6 +383,20 @@ button {
   column-gap: 1em;
   transform: scale(1.3);
  }
+
+.footer-btn {
+  display: block;
+  width: 2.5em;
+  height: 2.5em;
+  border-radius: 50%;
+  padding: 0.5em;
+  box-shadow: inset 0 0 1em rgb(255, 255, 255),
+              0 0 0.1em rgba(0, 0, 0, 0.788);
+}
+
+.dev-btn {
+  background-color: #6b9cbd;
+}
  
  /* footer end */
 
