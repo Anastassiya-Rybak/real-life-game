@@ -17,7 +17,7 @@ const processTaskClick = (e) => {
 const createElem = (data) => {
     const elLi = document.createElement('li');
     elLi.id = data.id;
-    elContent.append(elLi);
+    elContent.prepend(elLi);
 
     const elText = document.createElement('span');
     elText.textContent = data.value;
