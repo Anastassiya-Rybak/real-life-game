@@ -5,13 +5,17 @@ const toggleWeightAddForm = () => {
     weightAddForm.classList.toggle('hidden');
 }
 
-const saveWeight = () => {    
-    sendWeightData(document.getElementById('new-weight-value').value);        
+const saveWeight = (e) => {    
+    e.preventDefault();
+    
+    sendWeightData(document.getElementById('new-weight-value').value);
+    
+    toggleWeightAddForm();
 }
 
 weightAddForm.addEventListener('click', (e)=>{ 
     if(!e.target.closest('.modal-content')) toggleWeightAddForm();
-    if(e.target.closest('button')) saveWeight(); 
+    if(e.target.closest('button')) saveWeight(e); 
 })
 
 weightAddBtn.addEventListener('click', toggleWeightAddForm)
