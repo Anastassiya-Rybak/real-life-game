@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Планировщик</title>
+  <link rel="stylesheet" href="/base.css">
+  <link rel="stylesheet" href="beauty.css">
+</head>
+<body>
+
+<div class="app">
+  <header class="top">
+    <h1 class="logo">Планеровщик</h1>
+    <div class="top-actions">
+      <a class="icon-btn light-btn" href="/index.html"><img src="/log-out-outlined-svgrepo-com.svg" alt="main"></a>
+      <a class="icon-btn accent-btn" href="/pages/lists/taskList/taskList.html"><hr><hr><hr></a>
+      <a class="icon-btn just-btn" href="/pages/lists/shopList/shopList.html">🧺</a>
+      <button class="icon-btn just-btn">⚙️</button>
+    </div>
+  </header>
+  <main class="dashboard">
+    <h2>Уход за собой</h2>
+    <section class="sections">
+        <div id="1" class="section">
+            <h3 class="section_title">Название раздела</h3>
+            <div class="section_option open">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                <ul>
+                    <li>
+                        <span>Действие такое</span>
+                        <button>Убрать</button>
+                    </li>
+                    <li>
+                        <input type="text">
+                        <button>+</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <button class="ghost-btn add-btn">Создать раздел</button>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/DBconnect.js"></script>
+<script src="beauty.js"></script>
+
+</body>
+</html>
