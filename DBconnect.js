@@ -252,6 +252,61 @@ const saveTask = async (taskData) => {
 
 }
 
+const saveTrip = async (tripData) => {
+  try {
+    if (tripData.img) {
+      const fileExt = tripData.img.name.split('.').pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+
+      const { error: uploadError } = await db
+                                          .storage
+                                          .from("fullBucket")
+                                          .upload(fileName, tripData.img, {
+                                            upsert: true,
+                                          });
+
+      if (uploadError) throw uploadError;
+
+      const { data: imgData } = db
+                                .storage
+                                .from("fullBucket")
+                                .getPublicUrl(fileName);
+      tripData.img = imgData.publicUrl;
+    }
+
+
+    const { data, error } = await db
+                                        .from("trips")
+                                        .upsert(tripData)
+                                        .select('id')
+                                        .single();
+
+    if (error) throw error;
+  
+    tripData.id = data.id;
+
+    return {
+      success: true,
+      msg: "Сохранено",
+      savedData: tripData
+    };
+  } catch (err) {
+    console.error("SAVE ERROR:", err);
+    throw err;
+  }  
+}
+
+const getTripsData = async () => {
+  const { data: tripsArr, error: tripsError } = await db
+    .from('trips')
+    .select(`id,name,img,date_start,date_end`)
+    .order('date_start');
+
+  if (tripsError) throw tripsError;  
+
+  return tripsArr;
+}
+
 const sendTask = async (arrTasks, type = 'task') => {  
   if (!Array.isArray(arrTasks) || !arrTasks.length) {
     return { success: false, msg: 'Нет данных для сохранения' };
