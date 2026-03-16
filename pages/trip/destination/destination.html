@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Планировщик</title>
+  <link rel="stylesheet" href="/base.css">
+  <link rel="stylesheet" href="destination.css">
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <h1 class="logo">Планеровщик</h1>
+    <div class="top-actions">
+      <a class="icon-btn light-btn" href="/index.html"><img src="/log-out-outlined-svgrepo-com.svg" alt="main"></a>
+      <a class="icon-btn accent-btn" href="/pages/lists/taskList/taskList.html"><hr><hr><hr></a>
+      <a class="icon-btn just-btn" href="/pages/lists/shopList/shopList.html">🧺</a>
+      <button class="icon-btn just-btn">⚙️</button>
+    </div>
+  </header>
+  <main class="dashboard">
+    <h2>НАШИ ПУТЕШЕСТВИЯ</h2>
+    <section class="content">
+        <ul class="content_list">
+        </ul>
+        <form class="content_new-trip">
+            <h3>Новое путешествие</h3>
+            <input type="text" name="name" id="new-trip-name" placeholder="Название">
+            <button class="add-btn primary-btn" id="add-new-trip">СОЗДАТЬ</button>
+            <input type="date" name="date_start" id="new-trip-start">
+            <input type="date" name="date_end" id="new-trip-end">
+            <input type="file" name="img" id="new-trip-img">
+        </form>
+    </section>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/DBconnect.js"></script>
+<script src="destination.js"></script>
+
+</body>
+</html>
