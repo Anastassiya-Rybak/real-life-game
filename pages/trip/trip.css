@@ -11,6 +11,7 @@ h2 {
     height: 15vh;
     border-radius: 0.3em;
     overflow: hidden;
+    margin-bottom: 1em;
 }
 
 .card_text {
