@@ -94,7 +94,8 @@ h2 {
     border-radius: 50%;
 }
 
-.daysPlan_content ul {
+.daysPlan_content ul,
+.reserv ul {
     display: flex;
     flex-direction: column;
     row-gap: 1vh;
@@ -102,7 +103,8 @@ h2 {
     overflow-y: scroll;
 }
 
-.daysPlan_content ul li {
+.daysPlan_content ul li,
+.reserv li {
     display: flex;
     align-items: center;
     column-gap: 1em;
@@ -146,4 +148,39 @@ h2 {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+.reserv li {
+    border-radius: 0.5em;
+    padding: 0.7em;
+    justify-content: space-between;
+    column-gap: 0.5em;
+}
+
+.reserv li h4 {
+    max-width: 28%;
+}
+
+.reserv p {
+    width: 52%;
+}
+
+.reserv span {
+    font-size: 0.8em;
+    width: 20%;
+    text-align: center;
+    text-decoration: underline;
+}
+
+.reserv button {
+    width: 13%;
+    margin: 0 auto;
+}
+
+.paid {
+    background-color: rgba(153, 205, 50, 0.212);
+}
+
+.unpaid {
+    background-color: rgba(190, 17, 17, 0.219);
 }

@@ -41,7 +41,10 @@
                 </ul>
             </div>
         </div>
-        <div id="reserv" class="reserv hidden">rvrgvrf</div>
+        <div class="reserv hidden">
+            <ul id="reserv"></ul>
+            <button id="add-reserv" class="daysPlan_add-content">+</button>
+        </div>
         <div id="budjet" class="budjet hidden"></div>
         <div id="checkList" class="checkList hidden"></div>
         <div id="marks" class="marks hidden"></div>
@@ -56,6 +59,14 @@
             <input type="time">
             <input type="text" placeholder="Название">
             <textarea placeholder="Детали"></textarea>
+            <div>
+                <input type="number" placeholder="Цена">
+                <select name="currency">
+                    <option value="$">$</option>
+                    <option value="тг" selected>тг</option>
+                </select>
+                <input type="checkbox">
+            </div>
             <button id="create-new-day" class="primary-btn">OK</button>
             <ol id="modal-detailes"></ol>
         </form>

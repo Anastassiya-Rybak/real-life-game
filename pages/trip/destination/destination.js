@@ -1,4 +1,5 @@
 let planData  = [];
+let reservData = [];
 let tripId;
 let currDayData = {};
 const elContent = document.querySelector('.content');
@@ -70,6 +71,15 @@ const createEl = (type, data, init = false) => {
         let elLi = document.createElement('li');
         elLi.textContent = data;
         elParentOl.append(elLi);
+    } else if (type == 'reserv') {
+        const elParentUl = document.getElementById('reserv');  
+        let elLi = document.createElement('li');
+        elLi.id = data.id;
+        elLi.className = data.paid ? 'paid' : 'unpaid';
+        elLi.innerHTML = `<h4>${data.date} ${data.time}</h4>
+                            <p>${data.option}</p>
+                            <span>${data.price} ${data.currency}</span>`;
+        elParentUl.append(elLi);
     }
 }
 
@@ -85,7 +95,7 @@ const fillDetails = async () => {
     let procObj;
     let procItem;
 
-    allDestDetails.daysData.forEach((elem,idx)=>{
+    allDestDetails.daysData.forEach((elem)=>{
         if (elem.type == 'day') {
             procObj = {};
             procObj.num = elem.value;
@@ -110,7 +120,25 @@ const fillDetails = async () => {
             } else {
                 procItem.detaile.push(elem.value); 
             }            
-        } 
+        } else if (elem.type == 'reserv') {
+            procObj = reservData.find(el => el.date == elem.trip_date && el.time == elem.time);
+
+            procItem = JSON.parse(elem.value);
+
+            if (!procObj) {
+                procObj = {
+                    id: elem.id,
+                    time: elem.time,
+                    date: elem.trip_date,
+                    option: procItem.option,
+                    price: procItem.price,
+                    currency: procItem.currency,
+                    paid: procItem.paid
+                }
+            }
+
+            createEl('reserv', procObj)
+        }
     });
     
     planData.forEach((elem,idx) => {
@@ -130,16 +158,18 @@ const setModalElVisible = (elements, type) => {
             elements[2].classList.add('hidden');
             elements[3].classList.add('hidden');
             elements[4].classList.add('hidden');
-            elements[5].classList.remove('hidden');
+            elements[5].classList.add('hidden');
             elements[6].classList.add('hidden');
+            elements[7].classList.remove('hidden');
             break;
         case 1:
             elements[1].classList.add('hidden');
             elements[2].classList.remove('hidden');
             elements[3].classList.remove('hidden');
             elements[4].classList.remove('hidden');
-            elements[5].classList.remove('hidden');
-            elements[6].classList.add('hidden');
+            elements[5].classList.add('hidden');
+            elements[6].classList.remove('hidden');
+            elements[7].classList.add('hidden');
             break;
         case 2:
             elements[1].classList.add('hidden');
@@ -148,6 +178,16 @@ const setModalElVisible = (elements, type) => {
             elements[4].classList.add('hidden');
             elements[5].classList.add('hidden');
             elements[6].classList.remove('hidden');
+            elements[7].classList.add('hidden');
+            break;
+        case 3:
+            elements[1].classList.remove('hidden');
+            elements[2].classList.remove('hidden');
+            elements[3].classList.add('hidden');
+            elements[4].classList.remove('hidden');
+            elements[5].classList.remove('hidden');
+            elements[6].classList.remove('hidden');
+            elements[7].classList.remove('hidden');
             break;
         default:
             break;
@@ -184,6 +224,10 @@ const toggleModal = (type = 0, dop = '') => {
                 }
             });
 
+            setModalElVisible(elForm, type);
+            break;
+        case 3:
+            elForm[0].textContent = 'Новая бронь:';
             setModalElVisible(elForm, type);
             break;
         default:
@@ -262,7 +306,7 @@ const processModalClick = async(e) => {
         toggleModal(); 
 
         createEl('day', newDayData);
-    } else {
+    } else if (formType == 1) {
         const newItemData = {
             time: formEls[2].value ? String(formEls[2].value) : null,
             name: formEls[3].value,
@@ -286,11 +330,55 @@ const processModalClick = async(e) => {
 
             createEl('day-item', result.res);
         }, 600)
+    } else if (formType == 3) {
+        const elPriceInfo = formEls[5].children;
+        const dataToJSon = {
+            option: formEls[4].value,
+            price: elPriceInfo[0].value,
+            currency: elPriceInfo[1].value,
+            paid: elPriceInfo[2].checked
+        };
+
+        const newReservData = {
+            type: 'reserv',
+            value: JSON.stringify(dataToJSon),
+            time: formEls[2].value,
+            trip_date: formEls[1].value,
+            trip_id: tripId
+        };
+
+        const result = await saveReserv(newReservData);
+
+        elBtn.textContent = result.msg;
+
+        setTimeout(()=>{
+            elBtn.textContent = 'OK';
+        }, 600)
+
+        const resToStore = {
+            id: result.res.id,
+            time: result.res.time,
+            date: result.res.trip_date,
+            option: dataToJSon.option,
+            price: dataToJSon.price,
+            currency: dataToJSon.currency,
+            paid: dataToJSon.paid
+        }
+
+        reservData.push(resToStore);
+            
+        toggleModal(); 
+
+        createEl('reserv', resToStore);
     }
 }
 
 const addDayItem  = () => {
     toggleModal(1);
+}
+
+const addReservItem = () => {
+    toggleModal(3);
 }
 
 const showDetailes = (e) => {
@@ -306,9 +394,9 @@ const initListeners = () => {
     document.getElementById('days-navigation').addEventListener('click', processNavigation);
     document.getElementById('daysPlan').addEventListener('click', showDetailes);
     document.getElementById('add-day-plan-item').addEventListener('click', addDayItem);
+    document.getElementById('add-reserv').addEventListener('click', addReservItem);
     // document.querySelector('.marks-btn').addEventListener('click', processNavigation);
     document.querySelector('.modal-wrap').addEventListener('click', processModalClick);
-
     
 }
 
