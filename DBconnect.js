@@ -307,6 +307,31 @@ const getTripsData = async () => {
   return tripsArr;
 }
 
+const getDestinationData = async (id) => {
+  const { data: tripInfo, error: tripError } = await db
+    .from('trips')
+    .select(`*`)
+    .eq('id', id);
+
+  if (tripError) throw tripError; 
+
+  const { data: tripsArr, error: tripsError } = await db
+    .from('trips_detailes')
+    .select(`*`)
+    .eq('trip_id', id)
+    .order('trip_date', { ascending: true })
+    .order('type', { ascending: true })
+    .order('time', { ascending: true });
+
+
+  if (tripsError) throw tripsError;  
+
+  return {
+    daysData: tripsArr,
+    tripInfo: tripInfo[0]
+  };
+}
+
 const saveDay = async (dayData) => {
   try {
     const dataToUpsert = {
@@ -325,6 +350,53 @@ const saveDay = async (dayData) => {
     return {
       success: true,
       msg: "Сохранено"
+    };
+  } catch (err) {
+    console.error("SAVE ERROR:", err);
+    throw err;
+  }  
+}
+
+const saveDayItem = async (itemData) => {
+  try {
+    const dataToUpsert = {
+      type: 'day-item',
+      value: itemData.name,
+      name: itemData.name,
+      time: itemData.time,
+      trip_id: itemData.trip_id,
+      trip_date: itemData.date
+    };
+
+    const { data, error } = await db
+                            .from("trips_detailes")
+                            .upsert(dataToUpsert)
+                            .select('id')
+                            .single();
+
+    if (error) throw error;
+  
+    itemData.id = data.id;
+
+    if (itemData.detaile) {
+      dataToUpsert.type = 'day-item-detaile';
+      dataToUpsert.value = itemData.detaile;
+
+      const { data, error } = await db
+                              .from("trips_detailes")
+                              .upsert(dataToUpsert)
+                              .select('id')
+                              .single();
+
+      if (error) throw error;
+
+      itemData.detaile_id = data.id;
+    }
+
+    return {
+      success: true,
+      msg: "Сохранено",
+      res: itemData
     };
   } catch (err) {
     console.error("SAVE ERROR:", err);

@@ -21,7 +21,7 @@
   <main class="dashboard">
     <div class="content-title">
         <img id="main-img" src="/istockphoto-1526986072-612x612.jpg" alt="">
-        <h2>НАЗВАНИЕ</h2>
+        <h2></h2>
     </div>
     <nav id="navigation" class="navigation">
         <button class="active" data-nav="daysPlan">Планы</button>
@@ -32,30 +32,8 @@
     <section class="content">
         <div id="daysPlan" class="daysPlan">
             <nav id="days-navigation" class="daysPlan_nav">
-                <button class="daysPlan_btn active-day" data-nav="1"><h3>День 1</h3><span>01/01/26</span></button>
-                <button class="daysPlan_btn" data-nav="2"><h3>День 2</h3><span>02/01/26</span></button>                
                 <button id="add-day-plan" class="daysPlan_add-day">+</button>
             </nav>
-            <div class="daysPlan_content" data-dayContent="1">
-                <ul>
-                    <li id="6">
-                        <span class="daysPlan_day-time">04:00</span>
-                        <h4 class="daysPlan_day-item">Yfpdfybt tyhbt</h4>
-                    </li>
-                    <li id="7">
-                        <span class="daysPlan_day-time">04:00</span>
-                        <h4 class="daysPlan_day-item">Yfpdfybt tyhbt</h4>
-                    </li>
-                </ul>
-            </div>
-            <div class="daysPlan_content hidden" data-dayContent="2">
-                <ul>
-                    <li id="16">
-                        <span class="daysPlan_day-time">09:00</span>
-                        <h4 class="daysPlan_day-item">YTTTTTTTThbt</h4>
-                    </li>
-                </ul>
-            </div>
             <button id="add-day-plan-item" class="daysPlan_add-content">+</button>
             <div class="daysPlan_item-detaile hidden">
                 <ul>
@@ -71,11 +49,15 @@
     <section>
         <button class="marks-btn" data-nav="marks">Заметки</button>
     </section>
-    <div class="modal-wrap hidden">
+    <div class="modal-wrap hidden" data-modalType="0">
         <form class="modal-content">
-            <h3 id="new-day-count" data-newDay="0">День</h3>
+            <h3 id="new-day-count" data-newDay></h3>
             <input type="date">
+            <input type="time">
+            <input type="text" placeholder="Название">
+            <textarea placeholder="Детали"></textarea>
             <button id="create-new-day" class="primary-btn">OK</button>
+            <ol id="modal-detailes"></ol>
         </form>
     </div>
   </main>
