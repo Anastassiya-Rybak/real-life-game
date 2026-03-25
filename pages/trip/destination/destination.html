@@ -23,50 +23,61 @@
         <img id="main-img" src="/istockphoto-1526986072-612x612.jpg" alt="">
         <h2>НАЗВАНИЕ</h2>
     </div>
-    <nav class="navigation">
+    <nav id="navigation" class="navigation">
         <button class="active" data-nav="daysPlan">Планы</button>
         <button data-nav="reserv">Брони</button>
         <button data-nav="budjet">Бюджет</button>
         <button data-nav="checkList">Чек-листы</button>
     </nav>
     <section class="content">
-        <div class="daysPlan">
-            <nav class="daysPlan_nav">
-                <button class="daysPlan_btn active" data-day="1"><h3>День 1</h3><span>01/01/26</span></button>
-                <button class="daysPlan_btn" data-day="2"><h3>День 2</h3><span>02/01/26</span></button>                
-                <button class="daysPlan_btn" data-day="3"><h3>День 3</h3><span>03/01/26</span></button>                
-                <button class="daysPlan_btn" data-day="4"><h3>День 4</h3><span>04/01/26</span></button>                
+        <div id="daysPlan" class="daysPlan">
+            <nav id="days-navigation" class="daysPlan_nav">
+                <button class="daysPlan_btn active-day" data-nav="1"><h3>День 1</h3><span>01/01/26</span></button>
+                <button class="daysPlan_btn" data-nav="2"><h3>День 2</h3><span>02/01/26</span></button>                
                 <button id="add-day-plan" class="daysPlan_add-day">+</button>
             </nav>
-            <div class="daysPlan_content" data-day-content="1">
+            <div class="daysPlan_content" data-dayContent="1">
                 <ul>
-                    <li>
+                    <li id="6">
                         <span class="daysPlan_day-time">04:00</span>
                         <h4 class="daysPlan_day-item">Yfpdfybt tyhbt</h4>
-                        <span class="daysPlan_day-detail">*</span>
                     </li>
-                    <li>
+                    <li id="7">
                         <span class="daysPlan_day-time">04:00</span>
                         <h4 class="daysPlan_day-item">Yfpdfybt tyhbt</h4>
-                        <span class="daysPlan_day-detail">*</span>
                     </li>
                 </ul>
-                <button class="daysPlan_add-content">Дополнить</button>
             </div>
+            <div class="daysPlan_content hidden" data-dayContent="2">
+                <ul>
+                    <li id="16">
+                        <span class="daysPlan_day-time">09:00</span>
+                        <h4 class="daysPlan_day-item">YTTTTTTTThbt</h4>
+                    </li>
+                </ul>
+            </div>
+            <button id="add-day-plan-item" class="daysPlan_add-content">+</button>
             <div class="daysPlan_item-detaile hidden">
                 <ul>
                     <li>papa</li>
                 </ul>
             </div>
         </div>
-        <div class="reserv"></div>
-        <div class="budjet"></div>
-        <div class="checkList"></div>
-        <div class="marks"></div>
+        <div id="reserv" class="reserv hidden">rvrgvrf</div>
+        <div id="budjet" class="budjet hidden"></div>
+        <div id="checkList" class="checkList hidden"></div>
+        <div id="marks" class="marks hidden"></div>
     </section>
     <section>
         <button class="marks-btn" data-nav="marks">Заметки</button>
     </section>
+    <div class="modal-wrap hidden">
+        <form class="modal-content">
+            <h3 id="new-day-count" data-newDay="0">День</h3>
+            <input type="date">
+            <button id="create-new-day" class="primary-btn">OK</button>
+        </form>
+    </div>
   </main>
 </div>
 

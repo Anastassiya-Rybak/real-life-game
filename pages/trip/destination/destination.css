@@ -71,7 +71,7 @@ h2 {
     border-radius: 1em;
 }
 
-.daysPlan_btn.active,
+.daysPlan_btn.active-day,
 .daysPlan_day-detail {
     border: solid 3px rgb(255, 207, 47);
 }
@@ -99,6 +99,7 @@ h2 {
     flex-direction: column;
     row-gap: 1vh;
     padding: 2vh 0;
+    overflow-y: scroll;
 }
 
 .daysPlan_content ul li {
@@ -119,18 +120,30 @@ h2 {
     font-weight: 200;
 }
 
-.daysPlan_day-detail {
-    color: rgb(255, 207, 47);
-    height: 1.2em;
-    width: 1.5em;
-    text-align: center;
-    margin-top: -0.6em;
-    padding-bottom: 1em;
-    border-radius: 1em;
+.daysPlan_add-content {
+    border: solid 3px rgb(86, 175, 126);
+    color: rgb(86, 175, 126);
+    font-size: 1.8em;
+    padding: 0 0.3em;
+    border-radius: 50%;
 }
 
 .marks-btn {
     background-color: rgba(255, 239, 146, 0.849);
     width: 100%;
     letter-spacing: 0.3em;
+}
+
+.modal-wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+    background-color: rgba(206, 224, 224, 0.767);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }

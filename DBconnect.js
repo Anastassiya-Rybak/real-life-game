@@ -307,6 +307,31 @@ const getTripsData = async () => {
   return tripsArr;
 }
 
+const saveDay = async (dayData) => {
+  try {
+    const dataToUpsert = {
+      type: 'day',
+      value: dayData.num,
+      trip_id: dayData.trip_id,
+      trip_date: dayData.date
+    };
+
+    const { error } = await db
+                            .from("trips_detailes")
+                            .upsert(dataToUpsert);
+
+    if (error) throw error;
+  
+    return {
+      success: true,
+      msg: "Сохранено"
+    };
+  } catch (err) {
+    console.error("SAVE ERROR:", err);
+    throw err;
+  }  
+}
+
 const sendTask = async (arrTasks, type = 'task') => {  
   if (!Array.isArray(arrTasks) || !arrTasks.length) {
     return { success: false, msg: 'Нет данных для сохранения' };
