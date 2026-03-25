@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Планировщик</title>
+  <link rel="stylesheet" href="/base.css">
+  <link rel="stylesheet" href="destination.css">
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <h1 class="logo">Планеровщик</h1>
+    <div class="top-actions">
+      <a class="icon-btn light-btn" href="/index.html"><img src="/log-out-outlined-svgrepo-com.svg" alt="main"></a>
+      <a class="icon-btn accent-btn" href="/pages/lists/taskList/taskList.html"><hr><hr><hr></a>
+      <a class="icon-btn just-btn" href="/pages/lists/shopList/shopList.html">🧺</a>
+      <button class="icon-btn just-btn">⚙️</button>
+    </div>
+  </header>
+  <main class="dashboard">
+    <div class="content-title">
+        <img id="main-img" src="/istockphoto-1526986072-612x612.jpg" alt="">
+        <h2></h2>
+    </div>
+    <nav id="navigation" class="navigation">
+        <button class="active" data-nav="daysPlan">Планы</button>
+        <button data-nav="reserv">Брони</button>
+        <button data-nav="budjet">Бюджет</button>
+        <button data-nav="checkList">Чек-листы</button>
+    </nav>
+    <section class="content">
+        <div id="daysPlan" class="daysPlan">
+            <nav id="days-navigation" class="daysPlan_nav">
+                <button id="add-day-plan" class="daysPlan_add-day">+</button>
+            </nav>
+            <button id="add-day-plan-item" class="daysPlan_add-content">+</button>
+            <div class="daysPlan_item-detaile hidden">
+                <ul>
+                    <li>papa</li>
+                </ul>
+            </div>
+        </div>
+        <div id="reserv" class="reserv hidden">rvrgvrf</div>
+        <div id="budjet" class="budjet hidden"></div>
+        <div id="checkList" class="checkList hidden"></div>
+        <div id="marks" class="marks hidden"></div>
+    </section>
+    <section>
+        <button class="marks-btn" data-nav="marks">Заметки</button>
+    </section>
+    <div class="modal-wrap hidden" data-modalType="0">
+        <form class="modal-content">
+            <h3 id="new-day-count" data-newDay></h3>
+            <input type="date">
+            <input type="time">
+            <input type="text" placeholder="Название">
+            <textarea placeholder="Детали"></textarea>
+            <button id="create-new-day" class="primary-btn">OK</button>
+            <ol id="modal-detailes"></ol>
+        </form>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/DBconnect.js"></script>
+<script src="destination.js"></script>
+
+</body>
+</html>

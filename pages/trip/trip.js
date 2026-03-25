@@ -6,7 +6,7 @@ const goToDestination = (e) => {
 
     if (!elLi) return;
 
-    
+    location.href = `/pages/trip/destination/destination.html?id=${elLi.id}`;
 }
 
 const createEl = (el) => {
