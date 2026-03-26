@@ -159,8 +159,8 @@ const setModalElVisible = (elements, type) => {
             elements[3].classList.add('hidden');
             elements[4].classList.add('hidden');
             elements[5].classList.add('hidden');
-            elements[6].classList.add('hidden');
-            elements[7].classList.remove('hidden');
+            elements[6].classList.remove('hidden');
+            elements[7].classList.add('hidden');
             break;
         case 1:
             elements[1].classList.add('hidden');
