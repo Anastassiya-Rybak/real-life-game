@@ -73,8 +73,8 @@ footer {
 /* стрелки переключения даты */
 /* кнопка */
 .arrow {
-  width: 3em;
-  height: 3em;
+  width: 10vw;
+  height: 5vh;
   border-radius: 0.5em;
   background: #4caf50;
   border: none;
