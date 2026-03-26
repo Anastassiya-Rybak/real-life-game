@@ -80,6 +80,13 @@ const createEl = (type, data, init = false) => {
                             <p>${data.option}</p>
                             <span>${data.price} ${data.currency}</span>`;
         elParentUl.append(elLi);
+    } else if (type == 'mark') {
+        const elParentUl = document.getElementById('marks');  
+        let elLi = document.createElement('li');
+        elLi.id = data.id;
+        elLi.textContent = data.value;
+
+        elParentUl.append(elLi);
     }
 }
 
@@ -138,6 +145,13 @@ const fillDetails = async () => {
             }
 
             createEl('reserv', procObj)
+        } else if (elem.type == 'mark') {
+            procObj = {
+                id: elem.id,
+                value: elem.value
+            }
+
+            createEl('mark', procObj)
         }
     });
     
@@ -189,6 +203,15 @@ const setModalElVisible = (elements, type) => {
             elements[6].classList.remove('hidden');
             elements[7].classList.remove('hidden');
             break;
+        case 4:
+            elements[1].classList.add('hidden');
+            elements[2].classList.add('hidden');
+            elements[3].classList.add('hidden');
+            elements[4].classList.remove('hidden');
+            elements[5].classList.add('hidden');
+            elements[6].classList.remove('hidden');
+            elements[7].classList.add('hidden');
+            break;
         default:
             break;
     }
@@ -228,6 +251,10 @@ const toggleModal = (type = 0, dop = '') => {
             break;
         case 3:
             elForm[0].textContent = 'Новая бронь:';
+            setModalElVisible(elForm, type);
+            break;
+        case 4:
+            elForm[0].textContent = 'Новая заметка:';
             setModalElVisible(elForm, type);
             break;
         default:
@@ -370,6 +397,24 @@ const processModalClick = async(e) => {
         toggleModal(); 
 
         createEl('reserv', resToStore);
+    } else if (formType == 4) {
+        const newMarkData = {
+            type: "mark",
+            value: formEls[4].value,
+            trip_id: tripId
+        };
+
+        const result = await saveMark(newMarkData);
+
+        elBtn.textContent = result.msg;
+
+        setTimeout(()=>{
+            elBtn.textContent = 'OK';
+
+            toggleModal(); 
+
+            createEl('mark', result.res);
+        }, 600)
     }
 }
 
@@ -381,6 +426,10 @@ const addReservItem = () => {
     toggleModal(3);
 }
 
+const addMarkItem = () => {
+    toggleModal(4);
+}
+
 const showDetailes = (e) => {
     const currLiEl = e.target.closest('li');
 
@@ -389,15 +438,24 @@ const showDetailes = (e) => {
     toggleModal(2, currLiEl);
 }
 
+const openMark = (e) => {
+    const elLi = e.target.closest('li');
+
+    if (!elLi) return;
+
+    elLi.classList.toggle('opened');
+}
+
 const initListeners = () => {
     document.getElementById('navigation').addEventListener('click', processNavigation);
     document.getElementById('days-navigation').addEventListener('click', processNavigation);
     document.getElementById('daysPlan').addEventListener('click', showDetailes);
     document.getElementById('add-day-plan-item').addEventListener('click', addDayItem);
     document.getElementById('add-reserv').addEventListener('click', addReservItem);
-    // document.querySelector('.marks-btn').addEventListener('click', processNavigation);
+    document.getElementById('add-mark').addEventListener('click', addMarkItem);
+    document.querySelector('.marks-btn').addEventListener('click', processNavigation);
     document.querySelector('.modal-wrap').addEventListener('click', processModalClick);
-    
+    document.getElementById('marks').addEventListener('click', openMark);
 }
 
 const initContent = () => {

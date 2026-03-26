@@ -184,3 +184,32 @@ h2 {
 .unpaid {
     background-color: rgba(190, 17, 17, 0.219);
 }
+
+.marks button {
+    margin-top: 1em;
+}
+
+.marks ul {
+    display: flex;
+    gap: 1em;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    overflow-y: scroll;
+}
+
+.marks ul li {
+    width: 30vw;
+    height: 30vw;
+    border-radius: 0.7em;
+    font-size: 0.7em;
+    overflow: hidden;
+    text-align: justify;
+    padding: 0.6em;
+    background-color: rgb(255, 207, 47);
+}
+
+.marks ul li.opened {
+    width: 90vw;
+    height: 50vw;
+    font-size: 1em;
+}
