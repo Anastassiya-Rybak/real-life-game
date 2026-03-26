@@ -75,6 +75,8 @@ footer {
 .arrow {
   width: 10vw;
   height: 5vh;
+  min-width: 40px;
+  min-height: 50px;
   border-radius: 0.5em;
   background: #4caf50;
   border: none;
