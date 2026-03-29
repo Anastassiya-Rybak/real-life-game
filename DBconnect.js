@@ -399,6 +399,27 @@ const saveMark = async(markData) => {
   }  
 }
 
+const saveCheckItem = async(listData) => {
+  try {
+    const { data, error } = await db
+                            .from("trips_detailes")
+                            .upsert(listData)
+                            .select('*')
+                            .single();
+
+    if (error) throw error;
+  
+    return {
+      success: true,
+      msg: "Сохранено",
+      res: data
+    };
+  } catch (err) {
+    console.error("SAVE ERROR:", err);
+    throw err;
+  }  
+}
+
 const saveDayItem = async (itemData) => {
   try {
     const dataToUpsert = {

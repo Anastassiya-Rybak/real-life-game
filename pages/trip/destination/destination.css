@@ -213,3 +213,75 @@ h2 {
     height: 50vw;
     font-size: 1em;
 }
+
+.checkList {
+    height: 60vh;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.checkList button {
+    height: 8%;
+}
+
+.checkList_tab {
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1em;
+}
+
+svg {
+    width: 100%;
+    height: 100%;
+}
+
+.checkList_tab li {
+    padding: 0.5em;
+    border-radius: 1em 0 0 0.5em;
+    border: 2px solid rgba(1, 72, 112, 0.562);
+    border-right: none;
+}
+
+.checkList_tab li.active-list {
+    background-color: rgba(148, 236, 96, 0.651);
+}
+
+.checkList section {
+    height: 80%;
+    width: 85%;
+    border-left: 2px solid rgba(1, 72, 112, 0.562) !important;
+}
+
+.checkList section ul {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1em;
+    height: 70vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.checkList section li {
+    display: flex;
+    column-gap: 0.7em;
+    width: 90%;
+    height: 2.5em;
+    margin: 0 auto;
+    align-items: center;
+}
+
+.sqvr {
+    width: 1.5em;
+    height: 1.5em;
+    border: solid 1px black;
+}
+
+.done::after {
+    content: 'X';
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
