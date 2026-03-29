@@ -45,7 +45,23 @@
             <ul id="reserv"></ul>
             <button id="add-reserv" class="daysPlan_add-content">+</button>
         </div>
-        <div id="budjet" class="budjet hidden"></div>
+        <div id="budjet" class="budjet hidden">
+            <!-- Поставить проверку хватает ли накоплений на все указанное в виш листе.
+                Если не хватает - подстрокой красной сумма недостачи.
+                Если избыток - подстрокой зеленой сумма избытка. -->
+            <section class="budjet_saved"> 
+                <div>
+                    <h3></h3>
+                    <h3></h3>
+                </div>
+                <button id="budjet_in">Внести</button>
+            </section>
+            <section class="budjet_wish-list">
+                <button id="budjet_add-item">Добавить</button>
+                <ul id="budjet_wishs">
+                </ul>
+            </section>
+        </div>
         <div id="checkList" class="checkList hidden">
             <ul class="checkList_tab">
                 <li class="active-list" data-nav="buying">
@@ -101,6 +117,10 @@
             </div>
             <button id="create-new-day" class="primary-btn">OK</button>
             <ol id="modal-detailes"></ol>
+            <div class="budjet-btns">
+                <button id="incr">Пополнить</button>
+                <button id="decr">Вычесть</button>
+            </div>
         </form>
     </div>
   </main>

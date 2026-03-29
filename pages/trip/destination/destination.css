@@ -95,7 +95,8 @@ h2 {
 }
 
 .daysPlan_content ul,
-.reserv ul {
+.reserv ul,
+.budjet_wish-list ul {
     display: flex;
     flex-direction: column;
     row-gap: 1vh;
@@ -104,7 +105,8 @@ h2 {
 }
 
 .daysPlan_content ul li,
-.reserv li {
+.reserv li,
+.budjet_wish-list li {
     display: flex;
     align-items: center;
     column-gap: 1em;
@@ -284,4 +286,89 @@ svg {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.budjet_saved {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em 0;
+    margin-bottom: 1em;
+    border-bottom: 1px solid rgba(92, 148, 60, 0.651);
+    padding: 0 1em;
+}
+
+.budjet_saved button {
+    padding: 0.5em 1em;
+    max-height: fit-content;
+    border: none;
+    background-color: rgba(92, 148, 60, 0.651);
+    border-radius: 0.5em;
+    text-transform: uppercase;
+    color: aliceblue;
+}
+
+.budjet_saved h3 {
+    position: relative;
+    margin-bottom: 0.5em;
+}
+
+.budjet_saved span {
+    position: absolute;
+    right: 0;
+    bottom: -50%;
+    font-size: 0.7em;
+}
+
+.budjet_wish-list button {
+    padding: 0.5em 4em;
+    max-height: fit-content;
+    border: 2px solid rgba(92, 148, 60, 0.651);
+    border-radius: 0.5em;
+    text-transform: uppercase;
+    font-size: 0.7em;
+}
+
+.budjet_wish-list ul li span{
+    background-color: rgba(92, 148, 60, 0.116);
+    padding: 0.4em;
+    font-size: 0.7em;
+}
+
+.budjet_wish-list ul li span:first-child {
+    width: 70%;
+}
+
+.budjet_wish-list ul li span:last-child {
+    width: 29%;
+}
+
+
+.red {
+    color: brown;
+}
+
+.green {
+    color: darkgreen;
+}
+
+.budjet-btns {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.budjet-btns button {
+    width: 40%;
+    border: 1px solid rgba(105, 105, 105, 0.356);
+    text-transform: uppercase;
+    color: aliceblue;
+}
+
+.budjet-btns button:first-child {
+    background-color: rgba(92, 148, 60, 0.651);
+}
+
+.budjet-btns button:last-child {
+    background-color: rgba(201, 13, 0, 0.651);
 }

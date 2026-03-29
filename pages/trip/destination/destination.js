@@ -2,6 +2,16 @@ let planData  = [];
 let reservData = [];
 let tripId;
 let currDayData = {};
+let budjetData = {
+    tenge: {
+        summ: 0,
+        goal: 0
+    },
+    dollar: {
+        summ: 0,
+        goal: 0
+    }
+};
 const elContent = document.querySelector('.content');
 const elDaysContainer = document.querySelector('.daysPlan_nav');
 const elAddDay = document.getElementById('add-day-plan');
@@ -96,6 +106,17 @@ const createEl = (type, data, init = false) => {
         elLi.innerHTML = `<div class="sqvr ${listValue.done ? 'done' : ''}"></div>
                             <h4>${listValue.value}</h4>`;
         elParentUl.append(elLi);
+    } else if (type == 'wish') {
+        const wishValue = JSON.parse(data.value);
+        const elParentUl = document.getElementById('budjet_wishs');  
+
+        if (wishValue.currency == 'тг') { budjetData.tenge.goal = budjetData.tenge.goal + wishValue.summ; }
+        else { budjetData.dollar.goal = budjetData.dollar.goal + wishValue.summ; }
+
+        let elLi = document.createElement('li');
+        elLi.id = data.id;
+        elLi.innerHTML = `<span>${wishValue.text}</span><span>${wishValue.summ} ${wishValue.currency}</span>`;
+        elParentUl.append(elLi);
     }
 }
 
@@ -168,6 +189,17 @@ const fillDetails = async () => {
             }
 
             createEl('list', procObj)
+        } else if (elem.type == 'budjet') {
+            budjetData = JSON.parse(elem.value);
+
+            updateBudjet();
+        } else if (elem.type == 'wish') {
+            procObj = {
+                id: elem.id,
+                value: elem.value
+            }
+
+            createEl('wish', procObj);
         }
     });
     
@@ -179,6 +211,8 @@ const fillDetails = async () => {
     });
 
     currDayData = planData[0];
+
+    updateBudjet();
 }
 
 const setModalElVisible = (elements, type) => {
@@ -191,6 +225,7 @@ const setModalElVisible = (elements, type) => {
             elements[5].classList.add('hidden');
             elements[6].classList.remove('hidden');
             elements[7].classList.add('hidden');
+            elements[8].classList.add('hidden');
             break;
         case 1:
             elements[1].classList.add('hidden');
@@ -200,6 +235,7 @@ const setModalElVisible = (elements, type) => {
             elements[5].classList.add('hidden');
             elements[6].classList.remove('hidden');
             elements[7].classList.add('hidden');
+            elements[8].classList.add('hidden');
             break;
         case 2:
             elements[1].classList.add('hidden');
@@ -209,6 +245,7 @@ const setModalElVisible = (elements, type) => {
             elements[5].classList.add('hidden');
             elements[6].classList.remove('hidden');
             elements[7].classList.add('hidden');
+            elements[8].classList.add('hidden');
             break;
         case 3:
             elements[1].classList.remove('hidden');
@@ -218,6 +255,7 @@ const setModalElVisible = (elements, type) => {
             elements[5].classList.remove('hidden');
             elements[6].classList.remove('hidden');
             elements[7].classList.remove('hidden');
+            elements[8].classList.add('hidden');
             break;
         case 4:
             elements[1].classList.add('hidden');
@@ -227,6 +265,7 @@ const setModalElVisible = (elements, type) => {
             elements[5].classList.add('hidden');
             elements[6].classList.remove('hidden');
             elements[7].classList.add('hidden');
+            elements[8].classList.add('hidden');
             break;
         case 5:
             elements[1].classList.add('hidden');
@@ -236,6 +275,27 @@ const setModalElVisible = (elements, type) => {
             elements[5].classList.add('hidden');
             elements[6].classList.remove('hidden');
             elements[7].classList.add('hidden');
+            elements[8].classList.add('hidden');
+            break;
+        case 6:
+            elements[1].classList.add('hidden');
+            elements[2].classList.add('hidden');
+            elements[3].classList.add('hidden');
+            elements[4].classList.add('hidden');
+            elements[5].classList.remove('hidden');
+            elements[6].classList.add('hidden');
+            elements[7].classList.add('hidden');
+            elements[8].classList.remove('hidden');
+            break;
+        case 7:
+            elements[1].classList.add('hidden');
+            elements[2].classList.add('hidden');
+            elements[3].classList.remove('hidden');
+            elements[4].classList.add('hidden');
+            elements[5].classList.remove('hidden');
+            elements[6].classList.remove('hidden');
+            elements[7].classList.add('hidden');
+            elements[8].classList.add('hidden');
             break;
         default:
             break;
@@ -286,6 +346,14 @@ const toggleModal = (type = 0, dop = '') => {
             elForm[0].textContent = '';
             setModalElVisible(elForm, type);
             break;
+        case 6:
+            elForm[0].textContent = 'Изменение бюджета:';
+            setModalElVisible(elForm, type);
+            break;
+        case 7:
+            elForm[0].textContent = '';
+            setModalElVisible(elForm, type);
+            break;
         default:
             break;
     }
@@ -325,6 +393,38 @@ const processNavigation = (e) => {
         document.querySelector(`.${exActive.dataset.nav}`).classList.add('hidden');
         document.querySelector(`.${currBtn.dataset.nav}`).classList.remove('hidden');
     }
+}
+
+const updateBudjet = () => {
+    const elParent = document.querySelector('.budjet_saved').children[0].children;
+
+    let delta = +budjetData.tenge.summ - budjetData.tenge.goal;
+    let elSpan = '';   
+
+    if (delta !== 0) {
+        let elColor = '';
+
+        if (delta >= 0) { elColor = 'green'; }
+        else { elColor = 'red'; }
+
+        elSpan = `<span class="sub-sum ${elColor}">${+delta}</span>`;
+    }
+
+    elParent[0].innerHTML = budjetData.tenge.summ + ' тг' + elSpan;
+
+    delta = +budjetData.dollar.summ - budjetData.dollar.goal;
+    elSpan = '';
+
+    if (delta !== 0) {
+        let elColor = '';
+
+        if (delta >= 0) { elColor = 'green'; }
+        else { elColor = 'red'; }
+
+        elSpan = `<span class="sub-sum ${elColor}">${Math.abs(delta)}</span>`;
+    }
+
+    elParent[1].innerHTML = budjetData.dollar.summ + ' $' + elSpan;
 }
 
 const processModalClick = async(e) => {
@@ -473,6 +573,66 @@ const processModalClick = async(e) => {
 
             createEl('list', result.res);
         }, 600)
+    } else if (formType == 6) {
+        const elPriceInfo = formEls[5].children;
+        let summ = elPriceInfo[0].value;
+
+        if (elBtn.id == 'decr') summ = -summ;
+
+        if (elPriceInfo[1].value == 'тг') {
+            budjetData.tenge.summ = budjetData.tenge.summ + summ;  
+        } else {
+            budjetData.dollar.summ = budjetData.dollar.summ + summ;   
+        }
+
+        const newBudjetData = {
+            type: 'budjet',
+            value: JSON.stringify(budjetData),
+            trip_id: tripId
+        };
+
+        if (budjetData.id) newBudjetData.id = budjetData.id;
+
+        const result = await saveBudjet(newBudjetData);
+
+        elBtn.textContent = result.msg;
+
+        setTimeout(()=>{
+            elBtn.textContent = 'OK';
+            budjetData.id = result.id;
+
+            toggleModal(); 
+
+            updateBudjet();
+        }, 600)
+    } else if (formType == 7) {
+        const elPriceInfo = formEls[5].children;
+
+        const wishData = {
+            text: formEls[3].value,
+            summ: elPriceInfo[0].value,
+            currency: elPriceInfo[1].value
+        };
+
+        const newWishData = {
+            type: 'wish',
+            value: JSON.stringify(wishData),
+            trip_id: tripId
+        };
+
+        const result = await saveWish(newWishData);
+
+        elBtn.textContent = result.msg;
+
+        setTimeout(()=>{
+            elBtn.textContent = 'OK';
+
+            toggleModal(); 
+
+            createEl('wish', result.res);
+
+            updateBudjet();
+        }, 600)
     }
 }
 
@@ -536,6 +696,14 @@ const toCheck = async(e) => {
 
 }
 
+const openBudjetControl = () => {
+    toggleModal(6);
+}
+
+const addWish = () => {
+    toggleModal(7);
+}
+
 const initListeners = () => {
     document.getElementById('navigation').addEventListener('click', processNavigation);
     document.getElementById('days-navigation').addEventListener('click', processNavigation);
@@ -549,6 +717,8 @@ const initListeners = () => {
     document.querySelector('.checkList_tab').addEventListener('click', processNavigation);
     document.getElementById('add-check-item').addEventListener('click', addListItem);
     document.getElementById('checkList').addEventListener('click', toCheck);
+    document.getElementById('budjet_in').addEventListener('click', openBudjetControl);
+    document.getElementById('budjet_add-item').addEventListener('click', addWish)
 }
 
 const initContent = () => {
