@@ -420,6 +420,48 @@ const saveCheckItem = async(listData) => {
   }  
 }
 
+const saveBudjet = async(budjetData) => {
+  try {
+    const { data, error } = await db
+                            .from("trips_detailes")
+                            .upsert(budjetData)
+                            .select('id')
+                            .single();
+
+    if (error) throw error;
+  
+    return {
+      success: true,
+      msg: "Сохранено",
+      id: data.id
+    };
+  } catch (err) {
+    console.error("SAVE ERROR:", err);
+    throw err;
+  }  
+}
+
+const saveWish = async(wishData) => {
+  try {
+    const { data, error } = await db
+                            .from("trips_detailes")
+                            .upsert(wishData)
+                            .select('*')
+                            .single();
+
+    if (error) throw error;
+  
+    return {
+      success: true,
+      msg: "Сохранено",
+      res: data
+    };
+  } catch (err) {
+    console.error("SAVE ERROR:", err);
+    throw err;
+  }  
+}
+
 const saveDayItem = async (itemData) => {
   try {
     const dataToUpsert = {
