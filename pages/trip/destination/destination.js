@@ -87,6 +87,15 @@ const createEl = (type, data, init = false) => {
         elLi.textContent = data.value;
 
         elParentUl.append(elLi);
+    } else if (type == 'list') {
+        const listValue = JSON.parse(data.value);
+        const elParentUl = document.getElementById(listValue.parentID);  
+
+        let elLi = document.createElement('li');
+        elLi.id = data.id;
+        elLi.innerHTML = `<div class="sqvr ${listValue.done ? 'done' : ''}"></div>
+                            <h4>${listValue.value}</h4>`;
+        elParentUl.append(elLi);
     }
 }
 
@@ -152,6 +161,13 @@ const fillDetails = async () => {
             }
 
             createEl('mark', procObj)
+        } else if (elem.type == 'list') {
+            procObj = {
+                id: elem.id,
+                value: elem.value
+            }
+
+            createEl('list', procObj)
         }
     });
     
@@ -212,6 +228,15 @@ const setModalElVisible = (elements, type) => {
             elements[6].classList.remove('hidden');
             elements[7].classList.add('hidden');
             break;
+        case 5:
+            elements[1].classList.add('hidden');
+            elements[2].classList.add('hidden');
+            elements[3].classList.remove('hidden');
+            elements[4].classList.add('hidden');
+            elements[5].classList.add('hidden');
+            elements[6].classList.remove('hidden');
+            elements[7].classList.add('hidden');
+            break;
         default:
             break;
     }
@@ -257,13 +282,23 @@ const toggleModal = (type = 0, dop = '') => {
             elForm[0].textContent = 'Новая заметка:';
             setModalElVisible(elForm, type);
             break;
+        case 5:
+            elForm[0].textContent = '';
+            setModalElVisible(elForm, type);
+            break;
         default:
             break;
     }
 }
 
 const processNavigation = (e) => {
-    const currBtn = e.target.closest('button');
+    let currBtn = e.target.closest('button');
+    let dataMark = '';
+
+    if (!currBtn) {
+        currBtn = e.target.closest('li');
+        dataMark = '-list'
+    }
 
     if (!currBtn) return;
 
@@ -273,12 +308,11 @@ const processNavigation = (e) => {
     }
 
     const daysData = +currBtn.dataset.nav;
-    let dataMark = '';
 
     if (daysData) {
         dataMark = '-day';
         currDayData = planData.find(el => +el.num == daysData);
-    }    
+    }  
     
     const exActive = document.querySelector('.active'+dataMark);
     exActive.classList.remove('active'+dataMark);
@@ -415,6 +449,30 @@ const processModalClick = async(e) => {
 
             createEl('mark', result.res);
         }, 600)
+    } else if (formType == 5) {
+        const dataToJSon = {
+            parentID: document.querySelector('.active-list').dataset.nav,
+            value: formEls[3].value,
+            done: false
+        };
+
+        const newCheckData = {
+            type: 'list',
+            value: JSON.stringify(dataToJSon),
+            trip_id: tripId
+        };
+
+        const result = await saveCheckItem(newCheckData);
+
+        elBtn.textContent = result.msg;
+
+        setTimeout(()=>{
+            elBtn.textContent = 'OK';
+
+            toggleModal(); 
+
+            createEl('list', result.res);
+        }, 600)
     }
 }
 
@@ -446,6 +504,38 @@ const openMark = (e) => {
     elLi.classList.toggle('opened');
 }
 
+const addListItem = () => {
+    toggleModal(5);
+}
+
+const toCheck = async(e) => {
+    const elParent = e.target.closest('.sqvr');
+
+    if (!elParent) return;
+
+    const elLi = e.target.closest('li');
+
+    const dataToJSon = {
+        parentID: document.querySelector('.active-list').dataset.nav,
+        value: elLi.children[1].textContent,
+        done: !elParent.className.includes('done')
+    };
+
+    const newCheckData = {
+        id: elLi.id,
+        type: 'list',
+        value: JSON.stringify(dataToJSon),
+        trip_id: tripId
+    };
+
+    const result = await saveCheckItem(newCheckData);
+
+    if (result.success) {
+        elParent.classList.toggle('done');
+    }
+
+}
+
 const initListeners = () => {
     document.getElementById('navigation').addEventListener('click', processNavigation);
     document.getElementById('days-navigation').addEventListener('click', processNavigation);
@@ -456,6 +546,9 @@ const initListeners = () => {
     document.querySelector('.marks-btn').addEventListener('click', processNavigation);
     document.querySelector('.modal-wrap').addEventListener('click', processModalClick);
     document.getElementById('marks').addEventListener('click', openMark);
+    document.querySelector('.checkList_tab').addEventListener('click', processNavigation);
+    document.getElementById('add-check-item').addEventListener('click', addListItem);
+    document.getElementById('checkList').addEventListener('click', toCheck);
 }
 
 const initContent = () => {
